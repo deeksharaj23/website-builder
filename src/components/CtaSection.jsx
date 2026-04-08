@@ -84,6 +84,7 @@ function DarkPromptInput() {
 export default function CtaSection() {
   return (
     <section
+      id="cta"
       className="relative overflow-hidden px-6 py-28"
       aria-label="Ready to build"
       style={{ background: '#111111' }}

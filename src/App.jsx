@@ -1,23 +1,24 @@
-import Navbar from '@/components/Navbar'
-import HeroSection from '@/components/HeroSection'
-import StatsSection from '@/components/StatsSection'
-import MeetSection from '@/components/MeetSection'
-import TemplatesSection from '@/components/TemplatesSection'
-import CtaSection from '@/components/CtaSection'
-import Footer from '@/components/Footer'
+import { createElement } from 'react'
+import { Routes, Route } from 'react-router-dom'
+import RootLayout from '@/layouts/RootLayout'
+import routes from '@/routes'
 
+/**
+ * App renders the central route tree.
+ * RootLayout provides the shared Navbar + Footer wrapper.
+ * Each route entry in routes.jsx maps a path to a lazy Page component.
+ *
+ * createElement is used instead of JSX so ESLint's no-unused-vars
+ * reliably recognises the Page reference from the routes config.
+ */
 export default function App() {
   return (
-    <>
-      <Navbar />
-      <main>
-        <HeroSection />
-        <StatsSection />
-        <MeetSection />
-        <TemplatesSection />
-        <CtaSection />
-      </main>
-      <Footer />
-    </>
+    <Routes>
+      <Route element={<RootLayout />}>
+        {routes.map(({ path, Page }) => (
+          <Route key={path} path={path} element={createElement(Page)} />
+        ))}
+      </Route>
+    </Routes>
   )
 }

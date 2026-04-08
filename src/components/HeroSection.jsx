@@ -47,6 +47,7 @@ const RIGHT_CARDS = [
 export default function HeroSection() {
   return (
     <section
+      id="hero"
       className="flex min-h-[calc(100vh-4rem)] items-center overflow-hidden px-6 py-12"
       aria-label="Hero"
     >

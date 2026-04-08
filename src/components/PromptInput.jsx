@@ -47,7 +47,7 @@ export default function PromptInput() {
   return (
     <form
       onSubmit={(e) => { e.preventDefault(); submit() }}
-      className="relative w-full max-w-2xl rounded-3xl bg-[#EFEFED] p-3 pb-2.5 text-center"
+      className="relative w-full max-w-2xl rounded-3xl bg-[#EFEFEF] p-3 pb-2.5 text-center ring-1 ring-[rgba(17,17,17,0.08)]"
       aria-label="AI prompt form"
     >
       {!value && (

@@ -157,6 +157,7 @@ export default function MeetSection() {
 
   return (
     <section
+      id="how-it-works"
       className="bg-[#111111] px-6 py-20"
       aria-label="Meet your web builder"
     >

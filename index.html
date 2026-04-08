@@ -3,14 +3,65 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Generate a launch-ready landing page from a single prompt." />
-    <title>Website Builder | Prompt to Launch</title>
+
+    <!-- ── Favicon ───────────────────────────────────────────────────────── -->
+    <link rel="icon"             type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+
+    <!-- ── Primary SEO (fallback defaults; overridden per-page by useMeta) ── -->
+    <title>Website Builder — Build your unique website in seconds</title>
+    <meta name="description"  content="Turn your idea into a fully designed, ready-to-launch landing page, instantly. Powered by AI." />
+    <meta name="robots"       content="index, follow" />
+    <link rel="canonical"     href="https://websitebuilder.app" />
+
+    <!-- ── Open Graph ────────────────────────────────────────────────────── -->
+    <meta property="og:type"         content="website" />
+    <meta property="og:url"          content="https://websitebuilder.app" />
+    <meta property="og:site_name"    content="Website Builder" />
+    <meta property="og:title"        content="Website Builder — Build your unique website in seconds" />
+    <meta property="og:description"  content="Turn your idea into a fully designed, ready-to-launch landing page, instantly. Powered by AI." />
+    <meta property="og:image"        content="https://websitebuilder.app/og-image.png" />
+    <meta property="og:image:alt"    content="Website Builder — AI-powered page builder" />
+    <meta property="og:image:width"  content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale"       content="en_US" />
+
+    <!-- ── Twitter / X Card ─────────────────────────────────────────────── -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:site"        content="@websitebuilder" />
+    <meta name="twitter:title"       content="Website Builder — Build your unique website in seconds" />
+    <meta name="twitter:description" content="Turn your idea into a fully designed, ready-to-launch landing page, instantly. Powered by AI." />
+    <meta name="twitter:image"       content="https://websitebuilder.app/og-image.png" />
+
+    <!-- ── Theme / PWA ───────────────────────────────────────────────────── -->
+    <meta name="theme-color" content="#F5F5F3" />
+
+    <!-- ── Fonts — non-render-blocking async load ────────────────────────── -->
+    <!--
+      Preconnect so the browser opens the socket early.
+      The stylesheet is loaded with media="print" which the browser fetches
+      without blocking render, then switches to media="all" on load.
+      The <noscript> fallback handles JS-disabled environments.
+    -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      rel="preload"
+      as="style"
       href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Inter:wght@400;500;600&display=swap"
-      rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Inter:wght@400;500;600&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Inter:wght@400;500;600&display=swap"
+      />
+    </noscript>
   </head>
   <body>
     <div id="root"></div>

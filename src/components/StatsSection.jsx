@@ -28,6 +28,7 @@ function hexToRgba(hex, alpha) {
 export default function StatsSection() {
   return (
     <section
+      id="numbers"
       className="bg-[#111111] px-6 py-16"
       aria-label="Website Builder in numbers"
     >

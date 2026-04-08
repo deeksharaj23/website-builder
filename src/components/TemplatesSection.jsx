@@ -188,7 +188,7 @@ function TemplateCard({ template }) {
 
       {/* Meta */}
       <div>
-        <p className="text-sm font-semibold text-white">{template.name}</p>
+        <h3 className="text-sm font-semibold text-white">{template.name}</h3>
         <p className="mt-0.5 text-sm text-[#6B6B6B]">{template.desc}</p>
       </div>
     </article>
@@ -199,6 +199,7 @@ function TemplateCard({ template }) {
 export default function TemplatesSection() {
   return (
     <section
+      id="templates"
       className="bg-[#111111] px-6 pb-24 pt-4"
       aria-label="Discover templates"
     >

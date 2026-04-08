@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Block builder/editor internals once they exist
+Disallow: /api/
+Disallow: /_next/
+Disallow: /dashboard/
+
+Sitemap: https://websitebuilder.app/sitemap.xml
