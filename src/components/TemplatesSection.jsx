@@ -200,7 +200,7 @@ export default function TemplatesSection() {
   return (
     <section
       id="templates"
-      className="bg-[#111111] px-6 pb-24 pt-4"
+      className="bg-[#111111] px-6 py-24"
       aria-label="Discover templates"
     >
       <div className="mx-auto max-w-screen-xl">
@@ -217,12 +217,6 @@ export default function TemplatesSection() {
               and launch without the usual friction.
             </p>
           </div>
-          <button
-            type="button"
-            className="shrink-0 rounded-full border border-[rgba(255,255,255,0.12)] px-4 py-2 text-sm font-medium text-[#6B6B6B] transition-colors hover:border-[rgba(255,255,255,0.22)] hover:text-white"
-          >
-            View all
-          </button>
         </div>
 
         {/* Template grid */}

@@ -1,15 +1,23 @@
+import { BadgeCheck, Sparkles, Timer } from 'lucide-react'
+
 const STATS = [
   {
+    key: 'generated',
+    Icon: Sparkles,
     value: '12K+',
     label: 'pages generated this month',
     accent: '#CFE3F0',
   },
   {
+    key: 'speed',
+    Icon: Timer,
     value: '4 min',
     label: 'average time from prompt to live page',
     accent: '#D7EAD9',
   },
   {
+    key: 'ship',
+    Icon: BadgeCheck,
     value: '98%',
     label: 'of builders ship on the same day',
     accent: '#F3D9C6',
@@ -29,7 +37,7 @@ export default function StatsSection() {
   return (
     <section
       id="numbers"
-      className="bg-[#111111] px-6 py-16"
+      className="bg-[#111111] px-6 py-24"
       aria-label="Website Builder in numbers"
     >
       <div className="mx-auto max-w-screen-xl text-center">
@@ -48,7 +56,7 @@ export default function StatsSection() {
         <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
           {STATS.map((stat) => (
             <div
-              key={stat.value}
+              key={stat.key}
               className="group flex min-h-[160px] flex-col items-center justify-center gap-4 rounded-3xl bg-[#1A1A1A] p-6 transition-transform duration-200 hover:-translate-y-0.5"
               style={{
                 boxShadow: 'inset 0 0 0 0.5px transparent',
@@ -63,6 +71,18 @@ export default function StatsSection() {
                 e.currentTarget.style.backgroundColor = '#1A1A1A'
               }}
             >
+              {/* Icon */}
+              <span
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full"
+                style={{
+                  backgroundColor: hexToRgba(stat.accent, 0.18),
+                  boxShadow: `inset 0 0 0 0.5px ${hexToRgba(stat.accent, 0.45)}`,
+                }}
+                aria-hidden="true"
+              >
+                <stat.Icon size={18} strokeWidth={2.2} color={stat.accent} />
+              </span>
+
               {/* Large number */}
               <p className="text-[clamp(2.8rem,6vw,4rem)] font-bold leading-none tracking-tight text-white transition-colors duration-200 group-hover:text-white">
                 {stat.value}

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Generate a launch-ready landing page from a single prompt.",
+  "description": "Generate a launch-ready website from a single prompt.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

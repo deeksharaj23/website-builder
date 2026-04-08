@@ -5,7 +5,7 @@ const CTA_PROMPTS = [
   'Ask AI to create a dashboard to track my sales...',
   'Ask AI to build a waitlist page for my new product...',
   'Ask AI to design a portfolio for a UX designer...',
-  'Ask AI to generate a startup landing page with a bold hero...',
+  'Ask AI to generate a startup website with a bold hero...',
 ]
 
 function DarkPromptInput() {
@@ -42,7 +42,7 @@ function DarkPromptInput() {
         </div>
       )}
 
-      <label htmlFor="prompt-cta" className="sr-only">Describe your landing page idea</label>
+      <label htmlFor="prompt-cta" className="sr-only">Describe your website idea</label>
       <textarea
         ref={textareaRef}
         id="prompt-cta"
@@ -51,7 +51,7 @@ function DarkPromptInput() {
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={handleKeyDown}
         className="w-full resize-none bg-transparent text-sm leading-relaxed text-white outline-none"
-        aria-label="Landing page CTA prompt"
+        aria-label="Website CTA prompt"
         autoComplete="off"
         spellCheck={false}
       />
@@ -85,14 +85,11 @@ export default function CtaSection() {
   return (
     <section
       id="cta"
-      className="relative overflow-hidden px-6 py-28"
+      className="relative overflow-hidden px-6 py-24"
       aria-label="Ready to build"
       style={{ background: '#111111' }}
     >
       <div className="relative mx-auto flex max-w-screen-xl flex-col items-center gap-8 text-center">
-
-        {/* Eyebrow */}
-        <p className="text-sm font-medium text-[#6B6B6B]">AI Page Builder</p>
 
         {/* Headline */}
         <h2 className="font-display text-[clamp(2rem,4.5vw,3rem)] font-bold leading-tight tracking-tight text-white">

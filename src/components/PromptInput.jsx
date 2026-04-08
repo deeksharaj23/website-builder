@@ -2,11 +2,11 @@ import { useId, useRef, useState } from 'react'
 import { useTypewriter } from '@/hooks/useTypewriter'
 
 const PROMPTS = [
-  'A landing page for a fitness coach with pricing and testimonials...',
+  'A website for a fitness coach with pricing and testimonials...',
   'A personal portfolio showcasing my design work and case studies...',
-  'A SaaS product page for a project management tool with a free trial...',
-  'A newsletter sign-up page with a minimalist dark design...',
-  'An event landing page for a design conference in San Francisco...',
+  'A SaaS website for a project management tool with a free trial...',
+  'A newsletter website with a minimalist dark design...',
+  'An event website for a design conference in San Francisco...',
 ]
 
 export default function PromptInput() {
@@ -60,7 +60,7 @@ export default function PromptInput() {
         </div>
       )}
 
-      <label htmlFor="prompt-hero" className="sr-only">Describe your landing page idea</label>
+      <label htmlFor="prompt-hero" className="sr-only">Describe your website idea</label>
       <textarea
         ref={textareaRef}
         id="prompt-hero"
@@ -69,7 +69,7 @@ export default function PromptInput() {
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={handleKeyDown}
         className="w-full resize-none bg-transparent text-center text-sm leading-relaxed text-[#111111] outline-none"
-        aria-label="Landing page prompt"
+        aria-label="Website prompt"
         autoComplete="off"
         spellCheck={false}
       />

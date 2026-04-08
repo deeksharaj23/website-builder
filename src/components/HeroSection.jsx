@@ -15,7 +15,7 @@ const LEFT_CARDS = [
   {
     label: 'Speed',
     title: 'Launch in 60 seconds',
-    desc: 'From raw idea to live page — no waiting, no friction.',
+    desc: 'From raw idea to live page, no waiting, no friction.',
     bg: '#D7EAD9',
     labelBg: '#C2DCCA',
     floatClass: 'float-b',
@@ -36,7 +36,7 @@ const RIGHT_CARDS = [
   {
     label: 'Scale',
     title: '1M+ people reached',
-    desc: 'Built for ambitious goals — no engineers required.',
+    desc: 'Built for ambitious goals, no engineers required.',
     bg: '#E6DDF2',
     labelBg: '#D6CCE6',
     floatClass: 'float-d',
@@ -71,7 +71,7 @@ export default function HeroSection() {
           {/* Eyebrow badge */}
           <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E0E0DE] bg-white px-4 py-1.5 text-xs font-medium text-[#6B6B6B]">
             <span className="h-1.5 w-1.5 rounded-full bg-[#111111]" />
-            AI-powered page builder
+            AI-powered website builder
           </span>
 
           {/* Headline — handwritten display font */}
@@ -83,7 +83,7 @@ export default function HeroSection() {
 
           {/* Subtext */}
           <p className="max-w-[28rem] text-[17px] leading-relaxed text-[#6B6B6B]">
-            Turn your idea into a fully designed, ready-to-launch landing page, instantly.
+            Turn your idea into a fully designed, ready-to-launch website, instantly.
           </p>
 
           {/* Prompt input + CTA */}

@@ -7,11 +7,9 @@ import { Button } from '@/components/ui/button'
  * so they don't generate broken fragment URLs.
  */
 const NAV_LINKS = [
-  { label: 'Templates',  to: '/templates' },
-  { label: 'Builder',    to: '/builder' },
-  { label: 'Pricing',    to: '#' },
-  { label: 'Resources',  to: '#' },
-  { label: 'Enterprise', to: '#' },
+  { label: 'Templates',  to: '/#templates' },
+  { label: 'Plans',      to: '/#plans' },
+  { label: 'Enterprise', to: '/#plans' },
 ]
 
 export default function Navbar() {
@@ -35,7 +33,15 @@ export default function Navbar() {
         {/* Center — nav links */}
         <nav aria-label="Main navigation" className="hidden items-center gap-0.5 md:flex">
           {NAV_LINKS.map(({ label, to }) =>
-            to === '#' ? (
+            to.startsWith('#') ? (
+              <a
+                key={label}
+                href={to}
+                className="rounded-full px-3.5 py-1.5 text-sm font-medium text-[#6B6B6B] transition-colors hover:bg-[#EAEAE8] hover:text-[#111111]"
+              >
+                {label}
+              </a>
+            ) : to === '#' ? (
               <a
                 key={label}
                 href="#"
@@ -62,13 +68,13 @@ export default function Navbar() {
             size="sm"
             className="rounded-full px-4 text-sm font-medium text-[#6B6B6B] hover:bg-[#EAEAE8] hover:text-[#111111]"
           >
-            Log in
+            Get started
           </Button>
           <Button
             size="sm"
             className="rounded-full bg-[#111111] px-5 text-sm font-medium text-white hover:bg-[rgba(17,17,17,0.85)]"
           >
-            Get started
+            Get in touch
           </Button>
         </div>
 

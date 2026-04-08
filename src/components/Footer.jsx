@@ -2,7 +2,7 @@ const FOOTER_LINKS = [
   {
     heading: 'Product',
     links: [
-      'Pricing',
+      { label: 'Plans', href: '/#plans' },
       'Templates',
       'Changelog',
       'Roadmap',
@@ -106,7 +106,7 @@ export default function Footer() {
               <span className="text-sm font-semibold text-white">Website Builder</span>
             </div>
             <p className="max-w-[200px] text-sm leading-relaxed text-[#6B6B6B]">
-              Turn any idea into a launch-ready landing page in seconds.
+              Turn any idea into a launch-ready website in seconds.
             </p>
 
             {/* Social icons */}
@@ -132,12 +132,12 @@ export default function Footer() {
               </h3>
               <ul className="flex flex-col gap-2.5">
                 {col.links.map((link) => (
-                  <li key={link}>
+                  <li key={typeof link === 'string' ? link : link.label}>
                     <a
-                      href="#"
+                      href={typeof link === 'string' ? '#' : link.href}
                       className="text-sm text-[#6B6B6B] transition-colors hover:text-white"
                     >
-                      {link}
+                      {typeof link === 'string' ? link : link.label}
                     </a>
                   </li>
                 ))}
@@ -149,9 +149,19 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-[rgba(255,255,255,0.10)] pt-6 sm:flex-row">
-          <p className="text-xs text-[#6B6B6B]">
-            © {new Date().getFullYear()} Website Builder. All rights reserved.
-          </p>
+          <div className="flex flex-col items-center gap-2 text-center sm:items-start sm:text-left">
+            <p className="text-xs text-[#6B6B6B]">
+              © {new Date().getFullYear()} Website Builder. All rights reserved.
+            </p>
+            <a
+              href="https://octopusbuilds.com"
+              target="_blank"
+              rel="noreferrer"
+              className="text-xs text-[#6B6B6B] transition-colors hover:text-white"
+            >
+              Created by Octopus Builds
+            </a>
+          </div>
           <div className="flex items-center gap-4 text-xs text-[#6B6B6B]">
             <a href="#" className="transition-colors hover:text-white">Privacy</a>
             <span aria-hidden="true">·</span>

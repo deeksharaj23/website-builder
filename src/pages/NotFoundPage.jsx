@@ -3,7 +3,7 @@ import { useMeta } from '@/hooks/useMeta'
 
 export default function NotFoundPage() {
   useMeta({
-    title:       '404 — Page Not Found | Website Builder',
+    title:       '404 - Page Not Found | Website Builder',
     description: 'The page you are looking for does not exist.',
     robots:      'noindex, nofollow',
   })
@@ -22,7 +22,7 @@ export default function NotFoundPage() {
         Page not found
       </h1>
       <p className="max-w-sm text-[#6B6B6B]">
-        This page doesn&apos;t exist — yet.
+        This page doesn&apos;t exist (yet).
       </p>
       <Link
         to="/"

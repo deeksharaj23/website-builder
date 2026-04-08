@@ -9,11 +9,11 @@ export const SITE_NAME = 'Website Builder'
 export const SITE_URL  = 'https://websitebuilder.app'   // update on deploy
 
 export const DEFAULT_META = {
-  title:       `${SITE_NAME} — Build your unique website in seconds`,
-  description: 'Turn your idea into a fully designed, ready-to-launch landing page, instantly. Powered by AI.',
+  title:       `${SITE_NAME} - Build your unique website in seconds`,
+  description: 'Turn your idea into a fully designed, ready-to-launch website, instantly. Powered by AI.',
   ogType:      'website',
   ogImage:     `${SITE_URL}/og-image.png`,
-  ogImageAlt:  `${SITE_NAME} — AI-powered page builder`,
+  ogImageAlt:  `${SITE_NAME} - AI-powered website builder`,
   twitterCard: 'summary_large_image',
   twitterSite: '@websitebuilder',
   robots:      'index, follow',

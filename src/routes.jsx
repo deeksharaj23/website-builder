@@ -26,8 +26,8 @@ const routes = [
     path: '/',
     Page: HomePage,
     meta: {
-      title:       'Website Builder — Build your unique website in seconds',
-      description: 'Turn your idea into a fully designed, ready-to-launch landing page, instantly. Powered by AI.',
+      title:       'Website Builder - Build your unique website in seconds',
+      description: 'Turn your idea into a fully designed, ready-to-launch website, instantly. Powered by AI.',
     },
   },
   {
@@ -43,7 +43,7 @@ const routes = [
     Page: BuilderPage,
     meta: {
       title:       'Builder | Website Builder',
-      description: 'Describe your idea, generate instantly, refine with ease, and launch — all in one seamless flow.',
+      description: 'Describe your idea, generate instantly, refine with ease, and launch, all in one seamless flow.',
     },
   },
   // Catch-all — must stay last
@@ -51,7 +51,7 @@ const routes = [
     path: '*',
     Page: NotFoundPage,
     meta: {
-      title:       '404 — Page Not Found | Website Builder',
+      title:       '404 - Page Not Found | Website Builder',
       description: 'The page you are looking for does not exist.',
       robots:      'noindex, nofollow',
     },

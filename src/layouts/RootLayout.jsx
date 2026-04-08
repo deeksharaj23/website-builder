@@ -1,5 +1,5 @@
-import { Suspense } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Suspense, useEffect } from 'react'
+import { Outlet, useLocation } from 'react-router-dom'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 
@@ -8,6 +8,22 @@ import Footer from '@/components/Footer'
  * Includes a skip-to-content link for keyboard / screen-reader users.
  */
 export default function RootLayout() {
+  const { hash, pathname } = useLocation()
+
+  useEffect(() => {
+    if (!hash) return
+
+    // Let the route render first, then scroll.
+    const id = hash
+    requestAnimationFrame(() => {
+      const el = document.querySelector(id)
+      if (!el) return
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      // Offset for sticky navbar (h-16) + a little breathing room.
+      window.scrollBy({ top: -80, left: 0, behavior: 'smooth' })
+    })
+  }, [hash, pathname])
+
   return (
     <>
       {/* Skip-to-content — visually hidden until focused */}

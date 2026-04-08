@@ -7,7 +7,7 @@ const STEPS = [
     labelBg: '#CFE3F0',   // blue pastel
     labelText: '#2A6080',
     title: 'Start with an idea',
-    desc: 'Describe the page you want to create. Plain English is all you need — no specs, no wireframes.',
+    desc: 'Describe the page you want to create. Plain English is all you need, no specs, no wireframes.',
   },
   {
     label: '02',
@@ -27,7 +27,7 @@ const STEPS = [
 
 /* ─── Left panel: visual mockup per step ─── */
 // All three panels are always in the DOM and stacked via absolute positioning.
-// Opacity cross-fade means the container never changes height — no layout shift.
+// Opacity cross-fade means the container never changes height, so no layout shift.
 function StepPanel({ activeStep }) {
   return (
     <div className="relative h-[460px] overflow-hidden rounded-3xl bg-[rgba(255,255,255,0.06)]">
@@ -44,7 +44,7 @@ function StepPanel({ activeStep }) {
             <p className="text-sm leading-relaxed text-[#111111]">
               Create a{' '}
               <span className="rounded bg-[#CFE3F0] px-1 font-medium text-[#2A6080]">
-                landing page
+                website
               </span>
               <span className="ml-px inline-block h-[1em] w-px align-[-0.1em] bg-[#111111] opacity-80 cursor-blink" />
             </p>
@@ -158,7 +158,7 @@ export default function MeetSection() {
   return (
     <section
       id="how-it-works"
-      className="bg-[#111111] px-6 py-20"
+      className="bg-[#111111] px-6 py-24"
       aria-label="Meet your web builder"
     >
       <div className="mx-auto max-w-screen-xl">
@@ -190,8 +190,10 @@ export default function MeetSection() {
                   type="button"
                   onClick={() => setActiveStep(index)}
                   className={[
-                    'group flex w-full flex-col gap-2 rounded-2xl px-5 py-5 text-left transition-colors duration-200',
-                    isActive ? 'bg-[rgba(255,255,255,0.06)]' : 'hover:bg-[rgba(255,255,255,0.04)]',
+                    'group flex w-full flex-col gap-2 rounded-2xl px-5 py-5 text-left transition-[background-color,opacity] duration-200',
+                    isActive
+                      ? 'bg-[rgba(255,255,255,0.06)] opacity-100'
+                      : 'opacity-45 hover:bg-[rgba(255,255,255,0.04)] hover:opacity-80',
                   ].join(' ')}
                 >
                   {/* Step number pill */}
@@ -209,7 +211,7 @@ export default function MeetSection() {
                   <span
                     className={[
                       'text-xl font-semibold leading-snug transition-colors duration-300',
-                      isActive ? 'text-white' : '#6B6B6B',
+                      isActive ? 'text-white' : 'text-[#6B6B6B]',
                     ].join(' ')}
                   >
                     {step.title}
