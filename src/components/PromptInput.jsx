@@ -1,4 +1,5 @@
 import { useId, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useTypewriter } from '@/hooks/useTypewriter'
 
 const PROMPTS = [
@@ -14,12 +15,14 @@ export default function PromptInput() {
   const [images, setImages] = useState([])
   const textareaRef = useRef(null)
   const fileInputRef = useRef(null)
+  const navigate = useNavigate()
   const placeholder = useTypewriter(PROMPTS, { mode: 'type-only', typeSpeed: 42, pauseMs: 1400 })
   const attachId = useId()
 
   function submit() {
-    if (!value.trim()) return
-    console.log('Prompt submitted:', value)
+    const prompt = value.trim()
+    if (!prompt) return
+    navigate(`/builder?prompt=${encodeURIComponent(prompt)}`)
   }
 
   function handleKeyDown(e) {

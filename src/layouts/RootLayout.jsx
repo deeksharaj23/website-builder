@@ -9,6 +9,7 @@ import Footer from '@/components/Footer'
  */
 export default function RootLayout() {
   const { hash, pathname } = useLocation()
+  const isBuilder = pathname.startsWith('/builder')
 
   useEffect(() => {
     if (!hash) return
@@ -34,7 +35,7 @@ export default function RootLayout() {
         Skip to main content
       </a>
 
-      <Navbar />
+      {!isBuilder && <Navbar />}
 
       <main id="main-content">
         <Suspense fallback={null}>
@@ -42,7 +43,7 @@ export default function RootLayout() {
         </Suspense>
       </main>
 
-      <Footer />
+      {!isBuilder && <Footer />}
     </>
   )
 }
