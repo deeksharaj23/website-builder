@@ -33,7 +33,7 @@ export default function ChatInput({ value, onChange, onSend, disabled }) {
         }}
         onKeyDown={handleKeyDown}
         placeholder="Tell the builder what to change..."
-        className="min-h-[44px] flex-1 resize-none rounded-xl bg-[#F3F3F3] px-3 py-2 text-sm text-[#111111] outline-none disabled:opacity-60"
+        className="min-h-[44px] flex-1 resize-none rounded-xl bg-[#F3F3F3] px-3 py-2 text-sm leading-[1.25] text-[#111111] outline-none disabled:opacity-60"
         disabled={disabled}
       />
       <button

@@ -19,8 +19,8 @@ export default function ChatPanel({
 
   return (
     <div className="flex h-full flex-col">
-      <div ref={scrollerRef} className="flex-1 overflow-auto p-4">
-        <div className="flex flex-col gap-3">
+      <div ref={scrollerRef} className="flex-1 overflow-auto p-3">
+        <div className="flex flex-col gap-2">
           {messages?.length ? (
             messages.map((m) => (
               <ChatMessage key={m.id} role={m.role} content={m.content} />
