@@ -14,18 +14,19 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   return (
-    <header className="sticky top-0 z-50 w-full bg-[#F5F5F3]">
-      <div className="mx-auto flex h-16 max-w-screen-xl items-center justify-between px-6">
+    <header className="sticky top-0 z-50 w-full">
+      <div className="mx-auto max-w-screen-xl px-4 pt-3 sm:px-6">
+        <div className="ds-glass ds-blur ds-glass-edge flex h-14 items-center justify-between rounded-[999px] px-4">
 
         {/* Left — logo + product name */}
         <Link to="/" className="flex items-center gap-2.5" aria-label="Website Builder home">
           <div
-            className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#111111]"
+            className="flex h-7 w-7 items-center justify-center rounded-lg bg-[hsl(var(--primary)/0.92)] shadow-[var(--ds-shadow-2),var(--ds-glow-purple)]"
             aria-hidden="true"
           >
             <span className="text-xs font-bold text-white">W</span>
           </div>
-          <span className="text-sm font-semibold tracking-tight text-[#111111]">
+          <span className="text-sm font-semibold tracking-tight text-[hsl(var(--foreground))]">
             Website Builder
           </span>
         </Link>
@@ -37,7 +38,7 @@ export default function Navbar() {
               <a
                 key={label}
                 href={to}
-                className="rounded-full px-3.5 py-1.5 text-sm font-medium text-[#6B6B6B] transition-colors hover:bg-[#EAEAE8] hover:text-[#111111]"
+                className="ds-hover rounded-full px-3.5 py-1.5 text-sm font-medium text-[rgba(17,24,39,0.66)] hover:bg-[rgba(255,255,255,0.14)] hover:text-[hsl(var(--foreground))]"
               >
                 {label}
               </a>
@@ -45,7 +46,7 @@ export default function Navbar() {
               <a
                 key={label}
                 href="#"
-                className="rounded-full px-3.5 py-1.5 text-sm font-medium text-[#6B6B6B] transition-colors hover:bg-[#EAEAE8] hover:text-[#111111]"
+                className="ds-hover rounded-full px-3.5 py-1.5 text-sm font-medium text-[rgba(17,24,39,0.66)] hover:bg-[rgba(255,255,255,0.14)] hover:text-[hsl(var(--foreground))]"
               >
                 {label}
               </a>
@@ -53,7 +54,7 @@ export default function Navbar() {
               <Link
                 key={label}
                 to={to}
-                className="rounded-full px-3.5 py-1.5 text-sm font-medium text-[#6B6B6B] transition-colors hover:bg-[#EAEAE8] hover:text-[#111111]"
+                className="ds-hover rounded-full px-3.5 py-1.5 text-sm font-medium text-[rgba(17,24,39,0.66)] hover:bg-[rgba(255,255,255,0.14)] hover:text-[hsl(var(--foreground))]"
               >
                 {label}
               </Link>
@@ -66,18 +67,19 @@ export default function Navbar() {
           <Button
             variant="ghost"
             size="sm"
-            className="rounded-full px-4 text-sm font-medium text-[#6B6B6B] hover:bg-[#EAEAE8] hover:text-[#111111]"
+            className="rounded-full px-4 text-sm font-medium text-[rgba(17,24,39,0.68)] hover:bg-[rgba(255,255,255,0.16)] hover:text-[hsl(var(--foreground))]"
           >
             Get started
           </Button>
           <Button
             size="sm"
-            className="rounded-full bg-[#111111] px-5 text-sm font-medium text-white hover:bg-[rgba(17,17,17,0.85)]"
+            className="rounded-full px-5 text-sm font-medium"
           >
             Get in touch
           </Button>
         </div>
 
+        </div>
       </div>
     </header>
   )

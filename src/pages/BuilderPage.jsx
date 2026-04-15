@@ -170,8 +170,8 @@ export default function BuilderPage() {
         isBusy={phase !== 'completed' || isPublishing}
       />
 
-      <div className="flex min-h-0 flex-1">
-        <div className="w-1/4 min-w-[320px] border-r border-[rgba(17,17,17,0.08)]">
+      <div className="flex min-h-0 flex-1 p-3 pt-4">
+        <div className="ds-glass ds-blur ds-glass-edge w-1/4 min-w-[320px] overflow-hidden rounded-[var(--ds-radius-lg)]">
           <ChatPanel
             messages={messages}
             inputValue={inputDraft}
@@ -180,7 +180,7 @@ export default function BuilderPage() {
             phase={phase}
           />
         </div>
-        <div className="w-3/4">
+        <div className="w-3/4 pl-3">
           <PreviewPanel
             html={previewHtml}
             generationStep={generationStep}

@@ -83,8 +83,9 @@ export default function BuilderNavbar({
   }
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-[rgba(17,17,17,0.08)] bg-white">
-      <div className="flex h-14 items-center justify-between gap-3 px-4">
+    <header className="sticky top-0 z-40 w-full">
+      <div className="px-3 pt-3">
+        <div className="ds-glass ds-blur ds-glass-edge flex h-14 items-center justify-between gap-3 rounded-[var(--ds-radius-lg)] px-4">
         {/* Left */}
         <div className="flex min-w-0 items-start gap-2">
           {onBack && (
@@ -120,7 +121,7 @@ export default function BuilderNavbar({
                 <button
                   type="button"
                   onClick={beginRename}
-                  className="min-w-0 truncate rounded-sm bg-[hsl(var(--accent))] px-2 py-1 text-left text-sm font-semibold text-[#111111] hover:underline"
+                  className="min-w-0 truncate rounded-md bg-[rgba(255,255,255,0.14)] px-2 py-1 text-left text-sm font-semibold text-[hsl(var(--foreground))] ring-1 ring-[rgba(255,255,255,0.18)] hover:underline"
                   aria-label="Rename project"
                   title="Click to rename"
                 >
@@ -146,7 +147,7 @@ export default function BuilderNavbar({
               </DropdownMenu>
             </div>
 
-            <div className="hidden truncate text-xs text-[#6B6B6B] sm:block">
+            <div className="hidden truncate text-xs text-[rgba(17,24,39,0.60)] sm:block">
               Previewing last saved version
             </div>
           </div>
@@ -238,11 +239,12 @@ export default function BuilderNavbar({
               Publish
             </Button>
             {(shareStatus || publishStatus) && (
-              <span className="hidden text-xs text-[#6B6B6B] sm:inline">
+              <span className="hidden text-xs text-[rgba(17,24,39,0.60)] sm:inline">
                 {shareStatus || publishStatus}
               </span>
             )}
           </div>
+        </div>
         </div>
       </div>
     </header>

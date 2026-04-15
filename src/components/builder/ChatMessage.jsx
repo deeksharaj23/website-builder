@@ -4,10 +4,10 @@ export default function ChatMessage({ role, content }) {
   return (
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
       <div
-        className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-3 py-1.5 text-sm leading-[1.25] ${
+        className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-3 py-1.5 text-sm leading-[1.25] ds-hover ${
           isUser
-            ? 'bg-[#111111] text-white'
-            : 'bg-[#F3F3F3] text-[#111111]'
+            ? 'bg-[hsl(var(--primary)/0.88)] text-white shadow-[var(--ds-shadow-2),var(--ds-glow-blue)]'
+            : 'bg-[rgba(255,255,255,0.14)] text-[hsl(var(--foreground))] ring-1 ring-[rgba(255,255,255,0.18)] shadow-[var(--ds-shadow-2)]'
         }`}
       >
         {content}
