@@ -36,7 +36,7 @@
   body {
     background-color: #F5F5F3;
     color: #111111;
-    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, -apple-system, sans-serif;
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -45,7 +45,7 @@
 
 /* ─── Display / handwritten font ─── */
 .font-display {
-  font-family: 'Caveat', cursive;
+  font-family: "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, -apple-system, sans-serif;
 }
 
 /* ─── Floating card animations ─── */
