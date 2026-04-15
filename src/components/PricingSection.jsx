@@ -19,7 +19,7 @@ const PLANS = [
   },
   {
     key: 'enterprise',
-    name: 'Enterprise',
+    name: 'Security',
     price: '$25',
     period: '/mo',
     note: 'For teams and clients',

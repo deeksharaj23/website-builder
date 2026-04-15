@@ -5,10 +5,10 @@ import CtaSection from '@/components/CtaSection'
 
 export default function TemplatesPage() {
   useMeta({
-    title:       'Templates | Website Builder',
+    title:       'Templates | Orqis',
     description: 'Pick a template, make it yours, and launch without the usual friction.',
     jsonLd:      webPageSchema({
-      title:       'Templates | Website Builder',
+      title:       'Templates | Orqis',
       description: 'Pick a template, make it yours, and launch without the usual friction.',
       url:         `${SITE_URL}/templates`,
     }),

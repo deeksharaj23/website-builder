@@ -3,7 +3,7 @@ import { useMeta } from '@/hooks/useMeta'
 
 export default function NotFoundPage() {
   useMeta({
-    title:       '404 - Page Not Found | Website Builder',
+    title:       '404 - Page Not Found | Orqis',
     description: 'The page you are looking for does not exist.',
     robots:      'noindex, nofollow',
   })

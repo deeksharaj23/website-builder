@@ -16,7 +16,7 @@ import { DEFAULT_META, SITE_NAME, SITE_URL } from '@/seo'
  *
  * Usage:
  *   useMeta({
- *     title:       'Templates | Website Builder',
+ *     title:       'Templates | Orqis',
  *     description: 'Pick a template and launch in minutes.',
  *     jsonLd:      webPageSchema({ ... }),
  *   })

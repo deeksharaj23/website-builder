@@ -100,10 +100,13 @@ export default function Footer() {
           {/* Brand column */}
           <div className="col-span-2 flex flex-col gap-4 md:col-span-1">
             <div className="flex items-center gap-2.5">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white" aria-hidden="true">
-                <span className="text-xs font-bold text-[#111111]">W</span>
-              </div>
-              <span className="text-sm font-semibold text-white">Website Builder</span>
+              <img
+                src="/logo-symbol.png"
+                alt=""
+                className="h-7 w-7 rounded-lg object-contain"
+                aria-hidden="true"
+              />
+              <span className="text-base font-semibold text-white">Orqis</span>
             </div>
             <p className="max-w-[200px] text-sm leading-relaxed text-[#6B6B6B]">
               Turn any idea into a launch-ready website in seconds.
@@ -151,7 +154,7 @@ export default function Footer() {
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-[rgba(255,255,255,0.10)] pt-6 sm:flex-row">
           <div className="flex flex-col items-center gap-2 text-center sm:items-start sm:text-left">
             <p className="text-xs text-[#6B6B6B]">
-              © {new Date().getFullYear()} Website Builder. All rights reserved.
+              © {new Date().getFullYear()} Orqis. All rights reserved.
             </p>
             <a
               href="https://octopusbuilds.com"

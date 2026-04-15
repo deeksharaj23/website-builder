@@ -5,7 +5,7 @@
  * Update them here when you deploy to a real domain.
  */
 
-export const SITE_NAME = 'Website Builder'
+export const SITE_NAME = 'Orqis'
 export const SITE_URL  = 'https://websitebuilder.app'   // update on deploy
 
 export const DEFAULT_META = {

@@ -9,7 +9,9 @@ import { Button } from '@/components/ui/button'
 const NAV_LINKS = [
   { label: 'Templates',  to: '/#templates' },
   { label: 'Plans',      to: '/#plans' },
-  { label: 'Enterprise', to: '/#plans' },
+  { label: 'Security',   to: '/#plans' },
+  { label: 'FAQs',       to: '#' },
+  { label: 'Enterprise', to: '#' },
 ]
 
 export default function Navbar() {
@@ -18,15 +20,15 @@ export default function Navbar() {
       <div className="mx-auto flex h-16 max-w-screen-xl items-center justify-between px-6">
 
         {/* Left — logo + product name */}
-        <Link to="/" className="flex items-center gap-2.5" aria-label="Website Builder home">
-          <div
-            className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#111111]"
+        <Link to="/" className="flex items-center gap-2.5" aria-label="Orqis home">
+          <img
+            src="/logo-symbol.png"
+            alt=""
+            className="h-7 w-7 rounded-lg object-contain"
             aria-hidden="true"
-          >
-            <span className="text-xs font-bold text-white">W</span>
-          </div>
-          <span className="text-sm font-semibold tracking-tight text-[#111111]">
-            Website Builder
+          />
+          <span className="text-base font-semibold tracking-tight text-[#111111]">
+            Orqis
           </span>
         </Link>
 
@@ -68,13 +70,13 @@ export default function Navbar() {
             size="sm"
             className="rounded-full px-4 text-sm font-medium text-[#6B6B6B] hover:bg-[#EAEAE8] hover:text-[#111111]"
           >
-            Get started
+            Login
           </Button>
           <Button
             size="sm"
             className="rounded-full bg-[#111111] px-5 text-sm font-medium text-white hover:bg-[rgba(17,17,17,0.85)]"
           >
-            Get in touch
+            Get started
           </Button>
         </div>
 

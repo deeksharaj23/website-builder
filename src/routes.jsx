@@ -26,7 +26,7 @@ const routes = [
     path: '/',
     Page: HomePage,
     meta: {
-      title:       'Website Builder - Build your unique website in seconds',
+      title:       'Orqis - Build your unique website in seconds',
       description: 'Turn your idea into a fully designed, ready-to-launch website, instantly. Powered by AI.',
     },
   },
@@ -34,7 +34,7 @@ const routes = [
     path: '/templates',
     Page: TemplatesPage,
     meta: {
-      title:       'Templates | Website Builder',
+      title:       'Templates | Orqis',
       description: 'Pick a template, make it yours, and launch without the usual friction.',
     },
   },
@@ -42,7 +42,7 @@ const routes = [
     path: '/builder',
     Page: BuilderPage,
     meta: {
-      title:       'Builder | Website Builder',
+      title:       'Builder | Orqis',
       description: 'Describe your idea, generate instantly, refine with ease, and launch, all in one seamless flow.',
     },
   },
@@ -51,7 +51,7 @@ const routes = [
     path: '*',
     Page: NotFoundPage,
     meta: {
-      title:       '404 - Page Not Found | Website Builder',
+      title:       '404 - Page Not Found | Orqis',
       description: 'The page you are looking for does not exist.',
       robots:      'noindex, nofollow',
     },

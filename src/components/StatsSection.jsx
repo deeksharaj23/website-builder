@@ -38,13 +38,13 @@ export default function StatsSection() {
     <section
       id="numbers"
       className="bg-[#111111] px-6 py-24"
-      aria-label="Website Builder in numbers"
+      aria-label="Orqis in numbers"
     >
       <div className="mx-auto max-w-screen-xl text-center">
 
         {/* Header */}
         <h2 className="font-display text-[clamp(2rem,4.5vw,3rem)] font-bold leading-tight text-white">
-          Website Builder in numbers
+          Orqis in numbers
         </h2>
         <p className="mx-auto mt-2 max-w-2xl text-sm text-[#6B6B6B]">
           Ideas are turning into live pages every second.

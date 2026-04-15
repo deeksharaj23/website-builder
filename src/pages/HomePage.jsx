@@ -9,7 +9,7 @@ import CtaSection from '@/components/CtaSection'
 
 export default function HomePage() {
   useMeta({
-    title:       'Website Builder - Build your unique website in seconds',
+    title:       'Orqis - Build your unique website in seconds',
     description: 'Turn your idea into a fully designed, ready-to-launch website, instantly. Powered by AI.',
     jsonLd:      websiteSchema(),
   })

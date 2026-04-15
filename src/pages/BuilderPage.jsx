@@ -33,10 +33,10 @@ export default function BuilderPage() {
   const [isPublishing, setIsPublishing] = useState(false)
 
   useMeta({
-    title:       'Builder | Website Builder',
+    title:       'Builder | Orqis',
     description: 'Describe your idea, generate instantly, refine with ease, and launch, all in one seamless flow.',
     jsonLd:      webPageSchema({
-      title:       'Builder | Website Builder',
+      title:       'Builder | Orqis',
       description: 'Describe your idea, generate instantly, refine with ease, and launch, all in one seamless flow.',
       url:         `${SITE_URL}/builder`,
     }),
