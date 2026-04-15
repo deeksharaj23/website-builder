@@ -1,75 +1,28 @@
 @import "tailwindcss";
 
-/* ──────────────────────────────────────────────────────────────────────────────
-   Liquid Glass design system foundation (tokens + utilities)
-   - Keeps shadcn variables for existing `ui/*` components
-   - Uses CSS vars for scalable theming + Tailwind arbitrary values
-   - Limits backdrop-filter usage to a few key surfaces
-   ────────────────────────────────────────────────────────────────────────────── */
-
-/* ─── shadcn required CSS variables (mapped to DS tokens below) ─── */
+/* ─── shadcn required CSS variables ─── */
 @layer base {
   :root {
-    /* Base */
-    /* Keep legacy app feel (warm neutral background + deep ink text) */
-    --background: 60 9% 96%; /* ~ #F5F5F3 */
-    --foreground: 0 0% 7%;  /* ~ #111111 */
-    --card: 60 10% 97%;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 7%;
+    --card: 0 0% 100%;
     --card-foreground: 0 0% 7%;
-    --popover: 60 10% 97%;
+    --popover: 0 0% 100%;
     --popover-foreground: 0 0% 7%;
-
-    /* UI */
     --primary: 0 0% 7%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 60 8% 92%;
+    --secondary: 0 0% 94%;
     --secondary-foreground: 0 0% 7%;
-    --muted: 60 8% 92%;
+    --muted: 0 0% 94%;
     --muted-foreground: 0 0% 42%;
-    --accent: 60 10% 95%;
+    --accent: 0 0% 94%;
     --accent-foreground: 0 0% 7%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
-    --border: 60 6% 86%;
-    --input: 60 6% 80%;
-    --ring: 225 92% 60%;
-    --radius: 0.9rem;
-
-    /* ─── Design system tokens ─── */
-    --ds-radius-lg: 1.5rem;
-    --ds-radius-md: 1.05rem;
-    --ds-radius-sm: 0.9rem;
-
-    --ds-blur: 18px;
-    --ds-blur-strong: 24px;
-
-    /* Glass */
-    --ds-glass-bg: rgba(255, 255, 255, 0.12);
-    --ds-glass-bg-strong: rgba(255, 255, 255, 0.18);
-    --ds-glass-border: rgba(255, 255, 255, 0.20);
-    --ds-glass-border-soft: rgba(255, 255, 255, 0.14);
-    --ds-glass-highlight: rgba(255, 255, 255, 0.40);
-
-    /* Shadows (layered: outer + inner) */
-    --ds-shadow-1: 0 12px 28px rgba(17, 17, 17, 0.10);
-    --ds-shadow-2: 0 2px 0 rgba(255, 255, 255, 0.25) inset;
-    --ds-shadow-3: 0 1px 0 rgba(255, 255, 255, 0.10) inset;
-
-    /* Accent glows (diffused) */
-    --ds-glow-blue: 0 0 0 1px rgba(98, 129, 255, 0.16), 0 18px 60px rgba(98, 129, 255, 0.14);
-    --ds-glow-purple: 0 0 0 1px rgba(170, 110, 255, 0.14), 0 18px 60px rgba(170, 110, 255, 0.12);
-
-    /* Gradient accents */
-    --ds-accent-a: #6aa7ff;
-    --ds-accent-b: #b18aff;
-    --ds-accent-c: #ff9ad5;
-
-    /* Typography */
-    --ds-font-sans: "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, -apple-system, sans-serif;
-
-    /* Motion */
-    --ds-ease: cubic-bezier(.2, .8, .2, 1);
-    --ds-dur: 240ms;
+    --border: 0 0% 90%;
+    --input: 0 0% 94%;
+    --ring: 0 0% 7%;
+    --radius: 0.5rem;
   }
 }
 
@@ -81,154 +34,18 @@
   }
 
   body {
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
-    font-family: var(--ds-font-sans);
+    background-color: #F5F5F3;
+    color: #111111;
+    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 }
 
-/* ─── Display / headline font ─── */
+/* ─── Display / handwritten font ─── */
 .font-display {
-  font-family: var(--ds-font-sans);
-}
-
-/* ─── Background system (gradient mesh + soft radial glows + light noise) ─── */
-@layer base {
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: -1;
-    background:
-      /* Contextual glows (meaningful, not random):
-         - Blueprint (AI/precision): cool blue from top-left (idea origin)
-         - Amethyst (creativity): violet from top-right (imagination)
-         - Pearl warmth (human-crafted): warm blush from bottom (human touch)
-      */
-      radial-gradient(920px 640px at 16% 10%, rgba(106, 167, 255, 0.18), transparent 60%),
-      radial-gradient(820px 560px at 86% 14%, rgba(177, 138, 255, 0.15), transparent 62%),
-      radial-gradient(980px 720px at 52% 92%, rgba(255, 197, 210, 0.16), transparent 62%),
-      /* subtle ink vignette to anchor glass layers */
-      radial-gradient(1200px 900px at 50% 50%, rgba(17, 17, 17, 0.035), transparent 70%),
-      /* keep the original warm base feeling */
-      linear-gradient(135deg, rgba(245, 245, 243, 0.94), rgba(245, 245, 243, 0.40));
-    filter: saturate(1.06);
-  }
-
-  body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: -1;
-    opacity: 0.12;
-    background-image:
-      repeating-radial-gradient(circle at 10% 10%, rgba(0,0,0,0.14) 0 0.6px, transparent 0.6px 3px),
-      repeating-radial-gradient(circle at 70% 40%, rgba(0,0,0,0.12) 0 0.5px, transparent 0.5px 3.2px);
-    mix-blend-mode: soft-light;
-  }
-}
-
-/* ─── Reusable glass utilities ─── */
-@layer utilities {
-  .ds-glass {
-    background: var(--ds-glass-bg);
-    border: 1px solid var(--ds-glass-border-soft);
-    border-top-color: rgba(255, 255, 255, 0.22);
-    border-left-color: rgba(255, 255, 255, 0.18);
-    box-shadow: var(--ds-shadow-2), var(--ds-shadow-1);
-  }
-
-  .ds-glass-strong {
-    background: var(--ds-glass-bg-strong);
-    border: 1px solid var(--ds-glass-border);
-    box-shadow: var(--ds-shadow-2), var(--ds-shadow-3), var(--ds-shadow-1);
-  }
-
-  .ds-glass-edge {
-    position: relative;
-  }
-  .ds-glass-edge::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    background:
-      radial-gradient(120% 80% at 18% 10%, rgba(255, 255, 255, 0.42), transparent 50%),
-      radial-gradient(90% 70% at 80% 0%, rgba(255, 255, 255, 0.24), transparent 55%);
-    opacity: 0.55;
-    mix-blend-mode: overlay;
-  }
-
-  .ds-blur {
-    -webkit-backdrop-filter: blur(var(--ds-blur));
-    backdrop-filter: blur(var(--ds-blur));
-  }
-
-  .ds-blur-strong {
-    -webkit-backdrop-filter: blur(var(--ds-blur-strong));
-    backdrop-filter: blur(var(--ds-blur-strong));
-  }
-
-  /* Fallbacks (no backdrop-filter) */
-  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    .ds-blur,
-    .ds-blur-strong {
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
-    }
-    .ds-glass,
-    .ds-glass-strong {
-      background: rgba(255, 255, 255, 0.72);
-      border-color: rgba(17, 24, 39, 0.10);
-    }
-  }
-
-  .ds-hover {
-    transition:
-      transform var(--ds-dur) var(--ds-ease),
-      box-shadow var(--ds-dur) var(--ds-ease),
-      background-color var(--ds-dur) var(--ds-ease),
-      border-color var(--ds-dur) var(--ds-ease),
-      color var(--ds-dur) var(--ds-ease);
-  }
-
-  .ds-hover:hover {
-    transform: translateY(-1px) scale(1.02);
-  }
-
-  .ds-focus-ring:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(255,255,255,0.55), 0 0 0 6px rgba(98,129,255,0.22);
-  }
-
-  .ds-text-muted {
-    color: rgba(17, 24, 39, 0.62);
-  }
-
-  .ds-title-gradient {
-    background-image: linear-gradient(90deg, rgba(17,24,39,0.98), rgba(17,24,39,0.88), rgba(17,24,39,0.98));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ds-hover,
-  .float-a,
-  .float-b,
-  .float-c,
-  .float-d,
-  .cursor-blink {
-    animation: none !important;
-    transition: none !important;
-  }
+  font-family: 'Caveat', cursive;
 }
 
 /* ─── Floating card animations ─── */

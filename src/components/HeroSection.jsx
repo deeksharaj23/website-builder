@@ -48,7 +48,7 @@ export default function HeroSection() {
   return (
     <section
       id="hero"
-      className="flex min-h-[calc(100vh-4.5rem)] items-center overflow-hidden px-6 py-12"
+      className="flex min-h-[calc(100vh-4rem)] items-center overflow-hidden px-6 py-12"
       aria-label="Hero"
     >
       <div className="mx-auto flex w-full max-w-screen-xl items-center gap-8">
@@ -68,14 +68,21 @@ export default function HeroSection() {
         {/* ── Center content ── */}
         <div className="flex flex-1 flex-col items-center gap-6 text-center">
 
+          {/* Eyebrow badge */}
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E0E0DE] bg-white px-4 py-1.5 text-xs font-medium text-[#6B6B6B]">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#111111]" />
+            AI-powered website builder
+          </span>
+
           {/* Headline — handwritten display font */}
-          <h1 className="font-display ds-title-gradient max-w-none text-[clamp(2.6rem,6vw,4.5rem)] font-bold leading-[0.96] tracking-tight">
-            <span className="block whitespace-nowrap">Build your unique</span>
-            <span className="block whitespace-nowrap">website in seconds</span>
+          <h1 className="font-display max-w-lg text-[clamp(3.1rem,7vw,5.2rem)] font-bold leading-[0.94] tracking-tight text-[#111111]">
+            Build your unique
+            <br />
+            website in seconds
           </h1>
 
           {/* Subtext */}
-          <p className="max-w-[32rem] text-[17px] leading-relaxed text-[rgba(17,24,39,0.66)]">
+          <p className="max-w-[28rem] text-[17px] leading-relaxed text-[#6B6B6B]">
             Turn your idea into a fully designed, ready-to-launch website, instantly.
           </p>
 
@@ -83,7 +90,7 @@ export default function HeroSection() {
           <PromptInput />
 
           {/* Social proof nudge */}
-          <p className="text-xs text-[rgba(17,24,39,0.62)]">
+          <p className="text-xs text-[#6B6B6B]">
             No account needed &nbsp;·&nbsp; Free to start
           </p>
 

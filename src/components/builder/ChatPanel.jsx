@@ -26,7 +26,7 @@ export default function ChatPanel({
               <ChatMessage key={m.id} role={m.role} content={m.content} />
             ))
           ) : (
-            <div className="text-sm text-[rgba(17,24,39,0.62)]">
+            <div className="text-sm text-[#6B6B6B]">
               Enter a prompt on the homepage to start.
             </div>
           )}

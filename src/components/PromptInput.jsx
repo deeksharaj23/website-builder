@@ -1,4 +1,4 @@
-import { useEffect, useId, useMemo, useRef, useState } from 'react'
+import { useId, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTypewriter } from '@/hooks/useTypewriter'
 
@@ -18,19 +18,6 @@ export default function PromptInput() {
   const navigate = useNavigate()
   const placeholder = useTypewriter(PROMPTS, { mode: 'type-only', typeSpeed: 42, pauseMs: 1400 })
   const attachId = useId()
-
-  const imagePreviews = useMemo(() => {
-    return images.map((file) => ({
-      file,
-      url: URL.createObjectURL(file),
-    }))
-  }, [images])
-
-  useEffect(() => {
-    return () => {
-      for (const p of imagePreviews) URL.revokeObjectURL(p.url)
-    }
-  }, [imagePreviews])
 
   function submit() {
     const prompt = value.trim()
@@ -63,16 +50,16 @@ export default function PromptInput() {
   return (
     <form
       onSubmit={(e) => { e.preventDefault(); submit() }}
-      className="ds-glass ds-blur ds-glass-edge relative w-full max-w-2xl rounded-[1.75rem] p-3 pb-2.5 text-center ring-1 ring-[rgba(255,255,255,0.18)]"
+      className="relative w-full max-w-2xl rounded-3xl bg-[#EFEFEF] p-3 pb-2.5 text-center ring-1 ring-[rgba(17,17,17,0.08)]"
       aria-label="AI prompt form"
     >
       {!value && (
         <div
-          className="pointer-events-none absolute left-3 right-3 top-3 text-center text-sm leading-relaxed text-[rgba(17,24,39,0.62)]"
+          className="pointer-events-none absolute left-3 right-3 top-3 text-center text-sm leading-relaxed text-[#6B6B6B]"
           aria-hidden="true"
         >
           {placeholder}
-          <span className="cursor-blink ml-px inline-block h-[1em] w-px align-[-0.1em] bg-[rgba(17,24,39,0.55)]" />
+          <span className="cursor-blink ml-px inline-block h-[1em] w-px align-[-0.1em] bg-[#6B6B6B]" />
         </div>
       )}
 
@@ -84,7 +71,7 @@ export default function PromptInput() {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={handleKeyDown}
-        className="w-full resize-none bg-transparent text-center text-sm leading-relaxed text-[hsl(var(--foreground))] outline-none"
+        className="w-full resize-none bg-transparent text-center text-sm leading-relaxed text-[#111111] outline-none"
         aria-label="Website prompt"
         autoComplete="off"
         spellCheck={false}
@@ -100,29 +87,23 @@ export default function PromptInput() {
         className="sr-only"
       />
 
-      {imagePreviews.length > 0 && (
+      {images.length > 0 && (
         <div className="mt-2 flex flex-wrap justify-center gap-2">
-          {imagePreviews.map((p, idx) => (
-            <div
-              key={`${p.file.name}-${p.file.size}-${p.file.lastModified}-${idx}`}
-              className="relative h-12 w-12 overflow-hidden rounded-xl ring-1 ring-[rgba(255,255,255,0.22)] shadow-[var(--ds-shadow-2)]"
-              title={p.file.name}
+          {images.map((file, idx) => (
+            <span
+              key={`${file.name}-${file.size}-${file.lastModified}-${idx}`}
+              className="flex items-center gap-2 rounded-full bg-[#E2E2E0] px-3 py-1 text-xs text-[#111111]"
             >
-              <img
-                src={p.url}
-                alt={p.file.name}
-                className="h-full w-full object-cover"
-                loading="lazy"
-              />
+              <span className="max-w-[180px] truncate">{file.name}</span>
               <button
                 type="button"
                 onClick={() => removeImage(idx)}
-                className="ds-hover absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-[rgba(17,17,17,0.55)] text-xs text-white hover:bg-[rgba(17,17,17,0.70)]"
-                aria-label={`Remove ${p.file.name}`}
+                className="flex h-5 w-5 items-center justify-center rounded-full text-[#6B6B6B] transition-colors hover:bg-[#D7D7D5] hover:text-[#111111]"
+                aria-label={`Remove ${file.name}`}
               >
                 ×
               </button>
-            </div>
+            </span>
           ))}
         </div>
       )}
@@ -131,7 +112,7 @@ export default function PromptInput() {
         <button
           type="button"
           onClick={openFilePicker}
-          className="ds-hover flex h-8 w-8 items-center justify-center rounded-full text-xl leading-none text-[rgba(17,24,39,0.62)] hover:bg-[rgba(255,255,255,0.22)] hover:text-[hsl(var(--foreground))]"
+          className="flex h-8 w-8 items-center justify-center rounded-full text-xl leading-none text-[#6B6B6B] transition-colors hover:bg-[#E2E2E0] hover:text-[#111111]"
           aria-label="Attach images"
         >
           +
@@ -140,7 +121,7 @@ export default function PromptInput() {
         <button
           type="submit"
           disabled={!value.trim()}
-          className="ds-hover ds-focus-ring flex h-8 w-8 items-center justify-center rounded-full bg-[hsl(var(--primary)/0.88)] text-white shadow-[var(--ds-shadow-2),var(--ds-glow-blue)] hover:bg-[hsl(var(--primary)/0.80)] disabled:cursor-not-allowed disabled:opacity-35"
+          className="flex h-8 w-8 items-center justify-center rounded-full bg-[#111111] text-white transition-colors hover:bg-[rgba(17,17,17,0.85)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#111111] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-35"
           aria-label="Submit prompt"
         >
           <svg className="h-4 w-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
