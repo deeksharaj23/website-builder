@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { ChevronDown, ChevronLeft, ExternalLink, Maximize2, Minimize2, RefreshCcw, Settings } from 'lucide-react'
+import { ChevronDown, ExternalLink, Maximize2, Minimize2, RefreshCcw, Settings } from 'lucide-react'
 
 export default function BuilderNavbar({
   activeView,
@@ -95,9 +95,14 @@ export default function BuilderNavbar({
               variant="ghost"
               size="icon"
               onClick={onBack}
-              aria-label="Back"
+              aria-label="Orqis"
             >
-              <ChevronLeft className="h-4 w-4" />
+              <img
+                src="/logo-symbol.png"
+                alt=""
+                className="h-7 w-7 rounded-lg object-contain"
+                aria-hidden="true"
+              />
             </Button>
           )}
           <div className="min-w-0">

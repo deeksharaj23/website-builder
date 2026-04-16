@@ -105,3 +105,21 @@
   0%, 100% { opacity: 1; }
   50%       { opacity: 0; }
 }
+
+@layer utilities {
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE/Edge legacy */
+    scrollbar-width: none; /* Firefox */
+    scrollbar-color: transparent transparent; /* Firefox (extra) */
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none; /* Chrome/Safari */
+  }
+
+  .no-scrollbar::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+}

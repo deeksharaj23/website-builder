@@ -79,7 +79,8 @@ export default function BuilderPage() {
     setGenerationStep(0)
     setPreviewHtml(getPreviewHtmlForStep({ step: 0, basePrompt: nextBasePrompt }))
 
-    const firstUserMessage = { id: crypto.randomUUID(), role: 'user', content: userPrompt }
+    const now = Date.now()
+    const firstUserMessage = { id: crypto.randomUUID(), role: 'user', content: userPrompt, createdAt: now }
     setMessages((prev) => (replaceThread ? [firstUserMessage] : [...prev, firstUserMessage]))
 
     // Small pause so it feels like it "starts working" instantly after submit.
@@ -95,7 +96,7 @@ export default function BuilderPage() {
       setGenerationStep(step)
       setMessages((prev) => [
         ...prev,
-        { id: crypto.randomUUID(), role: 'ai', content: GENERATION_MESSAGES[i] },
+        { id: crypto.randomUUID(), role: 'ai', content: GENERATION_MESSAGES[i], createdAt: Date.now() },
       ])
       setPreviewHtml(getPreviewHtmlForStep({ step, basePrompt: nextBasePrompt }))
 
@@ -108,7 +109,7 @@ export default function BuilderPage() {
     setPreviewHtml(getPreviewHtmlForStep({ step: GENERATION_MESSAGES.length + 1, basePrompt: nextBasePrompt }))
     setMessages((prev) => [
       ...prev,
-      { id: crypto.randomUUID(), role: 'ai', content: 'Completed. What should we tweak next?' },
+      { id: crypto.randomUUID(), role: 'ai', content: 'Completed. What should we tweak next?', createdAt: Date.now() },
     ])
     setPhase('completed')
   }, [promptFromUrl])

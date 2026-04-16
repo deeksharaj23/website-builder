@@ -11,6 +11,8 @@ const EXAMPLE_PROMPTS = [
   'A simple restaurant website with menu, hours, and reservation CTA.',
 ]
 
+const PROMPT_CARD_COLORS = ['#CFE3F0', '#D7EAD9', '#F3D9C6', '#E6DDF2', '#F6E7B5']
+
 export default function ChatPanel({
   messages,
   inputValue,
@@ -24,6 +26,7 @@ export default function ChatPanel({
   const hasMessages = Boolean(messages?.length)
   const [canScrollPromptsLeft, setCanScrollPromptsLeft] = useState(false)
   const [canScrollPromptsRight, setCanScrollPromptsRight] = useState(false)
+  const shouldCenterPrompts = !canScrollPromptsLeft && !canScrollPromptsRight
 
   const showExamplePrompts = useMemo(() => !hasMessages && entryMode === 'direct', [hasMessages, entryMode])
 
@@ -39,10 +42,16 @@ export default function ChatPanel({
     if (!el) return
 
     const update = () => {
-      const maxLeft = el.scrollWidth - el.clientWidth
-      const left = el.scrollLeft
-      setCanScrollPromptsLeft(left > 1)
-      setCanScrollPromptsRight(left < maxLeft - 1)
+      const left = Math.round(el.scrollLeft)
+      const maxLeft = Math.max(0, Math.round(el.scrollWidth - el.clientWidth))
+
+      // Separate thresholds: left should enable as soon as there's any meaningful offset,
+      // right should disable a bit earlier to avoid "extra" scroll from padding.
+      const leftThreshold = 2
+      const rightThreshold = 12
+
+      setCanScrollPromptsLeft(left > leftThreshold)
+      setCanScrollPromptsRight(left < maxLeft - rightThreshold)
     }
 
     update()
@@ -67,7 +76,7 @@ export default function ChatPanel({
         <div className="flex flex-col gap-2">
           {hasMessages ? (
             messages.map((m) => (
-              <ChatMessage key={m.id} role={m.role} content={m.content} />
+              <ChatMessage key={m.id} role={m.role} content={m.content} createdAt={m.createdAt} />
             ))
           ) : (
             entryMode === 'direct' ? null : (
@@ -86,34 +95,38 @@ export default function ChatPanel({
           <div className="grid grid-cols-[auto_1fr_auto] items-center gap-2" aria-label="Example prompts">
             {/* Left arrow (no overlap; hidden on mobile) */}
             <div className="hidden sm:flex">
-              {canScrollPromptsLeft ? (
-                <button
-                  type="button"
-                  onClick={() => scrollPromptsBy('left')}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] shadow-sm transition-colors hover:bg-[hsl(var(--secondary))]"
-                  aria-label="Scroll example prompts left"
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                </button>
-              ) : (
-                <div className="h-8 w-8" aria-hidden="true" />
-              )}
+              <button
+                type="button"
+                onClick={() => scrollPromptsBy('left')}
+                disabled={!canScrollPromptsLeft}
+                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] transition-colors hover:bg-[hsl(var(--secondary))] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-[hsl(var(--card))]"
+                aria-label="Scroll example prompts left"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
             </div>
 
             {/* Scroll row */}
-            <div className="px-1">
+            <div>
               <div
                 ref={promptsScrollerRef}
-                className="flex gap-2 overflow-x-auto pb-1"
+                className={[
+                  'no-scrollbar flex gap-2 overflow-x-hidden p-1',
+                  shouldCenterPrompts ? 'justify-center' : '',
+                ].join(' ')}
+                style={{ touchAction: 'pan-y' }}
                 aria-label="Example prompts"
               >
-                {EXAMPLE_PROMPTS.map((prompt) => (
+                {EXAMPLE_PROMPTS.map((prompt, idx) => (
                   <button
                     key={prompt}
                     type="button"
                     onClick={() => onInputChange?.(prompt)}
-                    className="flex-shrink-0 rounded-2xl bg-[hsl(48_30%_92%)] p-3 text-left text-[13px] text-[hsl(var(--foreground))] ring-1 ring-[hsl(48_18%_84%)] transition-colors hover:bg-[hsl(48_34%_90%)]"
-                    style={{ width: 'min(360px, 80%)' }}
+                    className="flex-shrink-0 rounded-2xl p-3 text-left text-[13px] text-[hsl(var(--foreground))] ring-1 ring-[hsl(var(--border)/0.7)] transition-[filter] hover:brightness-[0.97]"
+                    style={{
+                      width: 'min(297px, 66%)',
+                      backgroundColor: PROMPT_CARD_COLORS[idx % PROMPT_CARD_COLORS.length],
+                    }}
                   >
                     <span className="block leading-relaxed">{prompt}</span>
                   </button>
@@ -123,18 +136,15 @@ export default function ChatPanel({
 
             {/* Right arrow (no overlap; hidden on mobile) */}
             <div className="hidden sm:flex justify-end">
-              {canScrollPromptsRight ? (
-                <button
-                  type="button"
-                  onClick={() => scrollPromptsBy('right')}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] shadow-sm transition-colors hover:bg-[hsl(var(--secondary))]"
-                  aria-label="Scroll example prompts right"
-                >
-                  <ChevronRight className="h-4 w-4" />
-                </button>
-              ) : (
-                <div className="h-8 w-8" aria-hidden="true" />
-              )}
+              <button
+                type="button"
+                onClick={() => scrollPromptsBy('right')}
+                disabled={!canScrollPromptsRight}
+                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] transition-colors hover:bg-[hsl(var(--secondary))] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-[hsl(var(--card))]"
+                aria-label="Scroll example prompts right"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
             </div>
           </div>
         </div>
