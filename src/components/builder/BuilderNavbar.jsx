@@ -152,44 +152,34 @@ export default function BuilderNavbar({
         {/* Center */}
         <div className="flex flex-1 justify-center">
           <div className="flex max-w-full items-center gap-2 overflow-x-auto">
-            <Button
-              type="button"
-              variant={activeView === 'preview' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => onActiveViewChange('preview')}
-              disabled={isChatOnly}
-            >
-              Preview
-            </Button>
-            <Button
-              type="button"
-              variant={activeView === 'code' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => onActiveViewChange('code')}
-              disabled={isChatOnly}
-            >
-              Code
-            </Button>
-            <Button
-              type="button"
-              variant={activeView === 'split' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => onActiveViewChange('split')}
-              disabled={isChatOnly}
-            >
-              Split view
-            </Button>
-
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              onClick={() => onChatOnlyChange?.(!isChatOnly)}
-              aria-label={isChatOnly ? 'Exit chat-only view' : 'Minimize to chat-only view'}
-              title={isChatOnly ? 'Exit chat-only view' : 'Minimize to chat-only view'}
-            >
-              {isChatOnly ? <Maximize2 className="h-4 w-4" /> : <Minimize2 className="h-4 w-4" />}
-            </Button>
+            {!isChatOnly && (
+              <>
+                <Button
+                  type="button"
+                  variant={activeView === 'preview' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => onActiveViewChange('preview')}
+                >
+                  Preview
+                </Button>
+                <Button
+                  type="button"
+                  variant={activeView === 'code' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => onActiveViewChange('code')}
+                >
+                  Code
+                </Button>
+                <Button
+                  type="button"
+                  variant={activeView === 'split' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => onActiveViewChange('split')}
+                >
+                  Split view
+                </Button>
+              </>
+            )}
           </div>
         </div>
 
@@ -200,22 +190,34 @@ export default function BuilderNavbar({
               type="button"
               variant="ghost"
               size="icon"
+              onClick={() => onChatOnlyChange?.(!isChatOnly)}
+              aria-label={isChatOnly ? 'Exit chat-only view' : 'Minimize to chat-only view'}
+              title={isChatOnly ? 'Exit chat-only view' : 'Minimize to chat-only view'}
+            >
+              {isChatOnly ? <Maximize2 className="h-4 w-4" /> : <Minimize2 className="h-4 w-4" />}
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
               aria-label="Refresh"
               onClick={onRefresh}
               disabled={isBusy}
             >
               <RefreshCcw className="h-4 w-4" />
             </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              aria-label="Open in new tab"
-              onClick={onOpenInNewTab}
-              disabled={isBusy}
-            >
-              <ExternalLink className="h-4 w-4" />
-            </Button>
+            {!isChatOnly && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                aria-label="Open in new tab"
+                onClick={onOpenInNewTab}
+                disabled={isBusy}
+              >
+                <ExternalLink className="h-4 w-4" />
+              </Button>
+            )}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button type="button" variant="ghost" size="icon" aria-label="Settings">
@@ -245,9 +247,11 @@ export default function BuilderNavbar({
             <Button type="button" variant="outline" size="sm" onClick={handleShareClick} disabled={isBusy}>
               Share
             </Button>
-            <Button type="button" size="sm" onClick={handlePublishClick} disabled={isBusy}>
-              Publish
-            </Button>
+            {!isChatOnly && (
+              <Button type="button" size="sm" onClick={handlePublishClick} disabled={isBusy}>
+                Publish
+              </Button>
+            )}
             {(shareStatus || publishStatus) && (
               <span className="hidden text-xs text-[hsl(var(--muted-foreground))] sm:inline">
                 {shareStatus || publishStatus}
