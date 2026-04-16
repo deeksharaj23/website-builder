@@ -10,11 +10,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { ChevronDown, ChevronLeft, ExternalLink, RefreshCcw, Settings } from 'lucide-react'
+import { ChevronDown, ChevronLeft, ExternalLink, Maximize2, Minimize2, RefreshCcw, Settings } from 'lucide-react'
 
 export default function BuilderNavbar({
   activeView,
   onActiveViewChange,
+  isChatOnly = false,
+  onChatOnlyChange,
   onBack,
   projectName,
   onProjectRename,
@@ -155,6 +157,7 @@ export default function BuilderNavbar({
               variant={activeView === 'preview' ? 'default' : 'outline'}
               size="sm"
               onClick={() => onActiveViewChange('preview')}
+              disabled={isChatOnly}
             >
               Preview
             </Button>
@@ -163,6 +166,7 @@ export default function BuilderNavbar({
               variant={activeView === 'code' ? 'default' : 'outline'}
               size="sm"
               onClick={() => onActiveViewChange('code')}
+              disabled={isChatOnly}
             >
               Code
             </Button>
@@ -171,8 +175,20 @@ export default function BuilderNavbar({
               variant={activeView === 'split' ? 'default' : 'outline'}
               size="sm"
               onClick={() => onActiveViewChange('split')}
+              disabled={isChatOnly}
             >
               Split view
+            </Button>
+
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              onClick={() => onChatOnlyChange?.(!isChatOnly)}
+              aria-label={isChatOnly ? 'Exit chat-only view' : 'Minimize to chat-only view'}
+              title={isChatOnly ? 'Exit chat-only view' : 'Minimize to chat-only view'}
+            >
+              {isChatOnly ? <Maximize2 className="h-4 w-4" /> : <Minimize2 className="h-4 w-4" />}
             </Button>
           </div>
         </div>

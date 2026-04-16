@@ -22,6 +22,7 @@ export default function BuilderPage() {
   const initializedRef = useRef(false)
   const generationRunRef = useRef(0)
   const basePromptRef = useRef('')
+  const lastNonChatOnlyViewRef = useRef('preview')
 
   const [messages, setMessages] = useState([])
   const [basePrompt, setBasePrompt] = useState('')
@@ -31,6 +32,7 @@ export default function BuilderPage() {
   const [generationStep, setGenerationStep] = useState(0)
   const [previewHtml, setPreviewHtml] = useState('')
   const [activeView, setActiveView] = useState('preview') // preview | code | split
+  const [isChatOnly, setIsChatOnly] = useState(false)
   const [projectName, setProjectName] = useState('Untitled project')
   const [isPublishing, setIsPublishing] = useState(false)
 
@@ -54,6 +56,18 @@ export default function BuilderPage() {
   useEffect(() => {
     basePromptRef.current = basePrompt
   }, [basePrompt])
+
+  useEffect(() => {
+    if (isChatOnly) return
+    lastNonChatOnlyViewRef.current = activeView
+  }, [activeView, isChatOnly])
+
+  function handleChatOnlyChange(next) {
+    setIsChatOnly(Boolean(next))
+    if (!next) {
+      setActiveView(lastNonChatOnlyViewRef.current || 'preview')
+    }
+  }
 
   const startGeneration = useCallback(async ({ userPrompt, replaceThread }) => {
     const runId = ++generationRunRef.current
@@ -168,6 +182,8 @@ export default function BuilderPage() {
       <BuilderNavbar
         activeView={activeView}
         onActiveViewChange={setActiveView}
+        isChatOnly={isChatOnly}
+        onChatOnlyChange={handleChatOnlyChange}
         onBack={handleBack}
         projectName={projectName}
         onProjectRename={setProjectName}
@@ -180,16 +196,39 @@ export default function BuilderPage() {
       />
 
       <div className="flex min-h-0 flex-1">
-        <div className="w-1/4 min-w-[320px] border-r border-[hsl(var(--border))]">
-          <ChatPanel
-            messages={messages}
-            inputValue={inputDraft}
-            onInputChange={setInputDraft}
-            onSend={handleSend}
-            phase={phase}
-            entryMode={entryMode}
+        {isChatOnly && (
+          <div
+            className="hidden flex-1 border-r border-[hsl(var(--border))] md:block"
+            aria-hidden="true"
           />
+        )}
+
+        <div
+          className={[
+            isChatOnly
+              ? 'w-full md:w-1/2'
+              : 'w-1/4 min-w-[320px] border-r border-[hsl(var(--border))]',
+          ].join(' ')}
+        >
+          <div className="h-full">
+            <ChatPanel
+              messages={messages}
+              inputValue={inputDraft}
+              onInputChange={setInputDraft}
+              onSend={handleSend}
+              phase={phase}
+              entryMode={entryMode}
+            />
+          </div>
         </div>
+
+        {isChatOnly && (
+          <div
+            className="hidden flex-1 border-l border-[hsl(var(--border))] md:block"
+            aria-hidden="true"
+          />
+        )}
+        {!isChatOnly && (
         <div className="w-3/4">
           <PreviewPanel
             html={previewHtml}
@@ -197,6 +236,7 @@ export default function BuilderPage() {
             phase={phase}
           />
         </div>
+        )}
       </div>
     </div>
   )
