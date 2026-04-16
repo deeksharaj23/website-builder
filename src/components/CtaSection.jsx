@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useTypewriter } from '@/hooks/useTypewriter'
 
 const CTA_PROMPTS = [
@@ -12,10 +13,12 @@ function DarkPromptInput() {
   const [value, setValue] = useState('')
   const textareaRef = useRef(null)
   const placeholder = useTypewriter(CTA_PROMPTS, { mode: 'type-only', typeSpeed: 42, pauseMs: 1400 })
+  const navigate = useNavigate()
 
   function submit() {
-    if (!value.trim()) return
-    console.log('CTA prompt submitted:', value)
+    const prompt = value.trim()
+    if (!prompt) return
+    navigate(`/builder?prompt=${encodeURIComponent(prompt)}`)
   }
 
   function handleKeyDown(e) {

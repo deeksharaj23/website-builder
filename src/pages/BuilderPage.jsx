@@ -32,7 +32,8 @@ export default function BuilderPage() {
   const [generationStep, setGenerationStep] = useState(0)
   const [previewHtml, setPreviewHtml] = useState('')
   const [activeView, setActiveView] = useState('preview') // preview | code | split
-  const [isChatOnly, setIsChatOnly] = useState(false)
+  // Default to the chat experience when opening the builder.
+  const [isChatOnly, setIsChatOnly] = useState(true)
   const [projectName, setProjectName] = useState('Untitled project')
   const [isPublishing, setIsPublishing] = useState(false)
 
