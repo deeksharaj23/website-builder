@@ -5,6 +5,7 @@ import StatsSection from '@/components/StatsSection'
 import MeetSection from '@/components/MeetSection'
 import TemplatesSection from '@/components/TemplatesSection'
 import PricingSection from '@/components/PricingSection'
+import FaqsSection from '@/components/FaqsSection'
 import CtaSection from '@/components/CtaSection'
 
 export default function HomePage() {
@@ -20,6 +21,7 @@ export default function HomePage() {
       <MeetSection />
       <TemplatesSection />
       <PricingSection />
+      <FaqsSection />
       <CtaSection />
     </>
   )

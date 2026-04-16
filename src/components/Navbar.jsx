@@ -10,7 +10,7 @@ const NAV_LINKS = [
   { label: 'Templates',  to: '/#templates' },
   { label: 'Plans',      to: '/#plans' },
   { label: 'Security',   to: '/#plans' },
-  { label: 'FAQs',       to: '#' },
+  { label: 'FAQs',       to: '/#faqs' },
   { label: 'Enterprise', to: '#' },
 ]
 
@@ -27,7 +27,7 @@ export default function Navbar() {
             className="h-7 w-7 rounded-lg object-contain"
             aria-hidden="true"
           />
-          <span className="text-base font-semibold tracking-tight text-[#111111]">
+          <span className="text-base font-semibold leading-none tracking-tight text-[#111111]">
             Orqis
           </span>
         </Link>

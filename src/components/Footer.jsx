@@ -106,7 +106,7 @@ export default function Footer() {
                 className="h-7 w-7 rounded-lg object-contain"
                 aria-hidden="true"
               />
-              <span className="text-base font-semibold text-white">Orqis</span>
+              <span className="text-base font-semibold leading-none text-white">Orqis</span>
             </div>
             <p className="max-w-[200px] text-sm leading-relaxed text-[#6B6B6B]">
               Turn any idea into a launch-ready website in seconds.
