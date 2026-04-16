@@ -7,10 +7,11 @@ function formatTimestamp(createdAt) {
   return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 }
 
-export default function ChatMessage({ role, content, createdAt, actions, onAction, messageId }) {
+export default function ChatMessage({ role, content, kind, createdAt, actions, onAction, messageId }) {
   const isUser = role === 'user'
   const timestamp = formatTimestamp(createdAt)
   const hasActions = Array.isArray(actions) && actions.length > 0
+  const isLoader = kind === 'loader'
 
   async function handleCopy() {
     try {
@@ -24,9 +25,9 @@ export default function ChatMessage({ role, content, createdAt, actions, onActio
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
       <div className="max-w-[85%]">
         <div
-          className={`group relative whitespace-pre-wrap break-words [overflow-wrap:anywhere] rounded-2xl px-3 py-1.5 text-sm leading-[1.25] ${
+          className={`group relative whitespace-pre-wrap break-words [overflow-wrap:anywhere] rounded-2xl px-4 py-3 text-sm leading-[1.25] ${
             isUser
-              ? 'bg-[hsl(var(--foreground))] text-[hsl(var(--background))]'
+              ? 'bg-[hsl(0_0%_86%)] text-[hsl(var(--foreground))]'
               : 'bg-[hsl(var(--secondary))] text-[hsl(var(--foreground))]'
           }`}
         >
@@ -46,11 +47,21 @@ export default function ChatMessage({ role, content, createdAt, actions, onActio
           </button>
           {timestamp && <span className="ml-1 whitespace-nowrap text-[11px]">{timestamp}</span>}
         </div>
-        {content}
+        {isLoader ? (
+          <span className="inline-flex items-center gap-2">
+            <span
+              className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent opacity-70"
+              aria-hidden="true"
+            />
+            <span>{content}</span>
+          </span>
+        ) : (
+          content
+        )}
         </div>
 
         {hasActions && (
-          <div className={`mt-2 flex flex-wrap gap-2 ${isUser ? 'justify-end' : 'justify-start'}`}>
+          <div className={`mt-3 flex flex-wrap gap-2 ${isUser ? 'justify-end' : 'justify-start'}`}>
             {actions.map((a) => (
               <Button
                 key={a.id}

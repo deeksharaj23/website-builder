@@ -122,4 +122,22 @@
   .no-scrollbar::-webkit-scrollbar-thumb {
     background: transparent;
   }
+
+  .thin-scrollbar {
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: rgba(0, 0, 0, 0.22) transparent; /* Firefox */
+  }
+
+  .thin-scrollbar::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .thin-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .thin-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.22);
+    border-radius: 999px;
+  }
 }

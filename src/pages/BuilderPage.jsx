@@ -23,25 +23,39 @@ const INTAKE_STEPS = [
       'A landing page for a yoga studio',
       'A portfolio for a product designer',
       'A waitlist page for an upcoming app',
+      'A website for a local restaurant',
+      'An ecommerce homepage for a skincare brand',
     ],
   },
   {
     key: 'goals',
     label: 'Goals',
     question: 'What are the main goals for this site? (e.g. get leads, sell, book calls)',
-    suggestions: ['Collect leads', 'Sell products', 'Book calls / demos'],
+    suggestions: ['Collect leads', 'Sell products', 'Book calls / demos', 'Build brand awareness', 'Grow an email list'],
   },
   {
     key: 'audience',
     label: 'Audience',
     question: 'Who is the target audience?',
-    suggestions: ['Busy professionals', 'Small business owners', 'Students / beginners'],
+    suggestions: [
+      'Busy professionals',
+      'Small business owners',
+      'Students / beginners',
+      'Enterprise teams',
+      'Parents / families',
+    ],
   },
   {
     key: 'designTheme',
     label: 'Design theme',
     question: 'What design theme should we use? (tone, colors, vibe)',
-    suggestions: ['Minimal & modern', 'Bold & playful', 'Elegant & premium'],
+    suggestions: [
+      'Minimal & modern',
+      'Bold & playful',
+      'Elegant & premium',
+      'Warm & friendly',
+      'Futuristic & techy',
+    ],
   },
 ]
 
@@ -74,6 +88,10 @@ export default function BuilderPage() {
   const [isChatOnly, setIsChatOnly] = useState(true)
   const [projectName, setProjectName] = useState('Untitled project')
   const [isPublishing, setIsPublishing] = useState(false)
+  const [previewSettings, setPreviewSettings] = useState(() => ({
+    showGuides: true,
+    snapToGrid: false,
+  }))
 
   const entryMode = useMemo(() => {
     if (promptFromUrl) return 'prompt'
@@ -132,15 +150,20 @@ export default function BuilderPage() {
 
     setPhase('generating')
 
+    const loaderMessageId = crypto.randomUUID()
+    setMessages((prev) => [
+      ...prev,
+      { id: loaderMessageId, role: 'ai', kind: 'loader', content: GENERATION_MESSAGES[0], createdAt: Date.now() },
+    ])
+
     for (let i = 0; i < GENERATION_MESSAGES.length; i++) {
       if (generationRunRef.current !== runId) return
 
       const step = i + 1
       setGenerationStep(step)
-      setMessages((prev) => [
-        ...prev,
-        { id: crypto.randomUUID(), role: 'ai', content: GENERATION_MESSAGES[i], createdAt: Date.now() },
-      ])
+      if (i > 0) {
+        setMessages((prev) => prev.map((m) => (m.id === loaderMessageId ? { ...m, content: GENERATION_MESSAGES[i] } : m)))
+      }
       setPreviewHtml(getPreviewHtmlForStep({ step, basePrompt: nextBasePrompt }))
 
       await sleep(650)
@@ -150,10 +173,9 @@ export default function BuilderPage() {
 
     setGenerationStep(GENERATION_MESSAGES.length + 1)
     setPreviewHtml(getPreviewHtmlForStep({ step: GENERATION_MESSAGES.length + 1, basePrompt: nextBasePrompt }))
-    setMessages((prev) => [
-      ...prev,
-      { id: crypto.randomUUID(), role: 'ai', content: 'Completed. What should we tweak next?', createdAt: Date.now() },
-    ])
+    setMessages((prev) => prev.map((m) => (
+      m.id === loaderMessageId ? { ...m, kind: undefined, content: 'Completed. What should we tweak next?' } : m
+    )))
     setPhase('completed')
   }, [promptFromUrl])
 
@@ -178,8 +200,8 @@ export default function BuilderPage() {
 
     return [
       `Idea: ${idea}`,
-      `Goals: ${goals}`,
-      `Audience: ${audience}`,
+      `Objective: ${goals}`,
+      `Target users: ${audience}`,
       `Design theme: ${designTheme}`,
     ].join('\n')
   }
@@ -192,6 +214,9 @@ export default function BuilderPage() {
       content: 'Perfect — generating your first draft now…',
       createdAt: Date.now(),
     })
+    // Switch out of chat-only once intake is complete so the generated site is visible.
+    setIsChatOnly(false)
+    setActiveView('preview')
     const prompt = compilePrompt(values)
     startGeneration({ userPrompt: prompt, replaceThread: false, appendUserMessage: false })
   }
@@ -202,7 +227,7 @@ export default function BuilderPage() {
     pushMessage({
       id: crypto.randomUUID(),
       role: 'ai',
-      content: `${step.label}: ${step.question}`,
+      content: step.question,
       createdAt: Date.now(),
     })
   }
@@ -235,7 +260,7 @@ export default function BuilderPage() {
     else askNextStep(nextIndex)
   }
 
-  function handleMessageAction({ messageId, actionId, payload }) {
+  function handleMessageAction({ actionId, payload }) {
     if (actionId?.startsWith('reply:')) {
       const nextText = payload?.text || actionId.slice('reply:'.length)
       handleSend(nextText)
@@ -268,6 +293,111 @@ export default function BuilderPage() {
     const step = INTAKE_STEPS[intake.stepIndex]
     return step?.suggestions || []
   }, [intake.done, intake.started, intake.stepIndex, promptFromUrl])
+
+  function elaboratePillSelection({ stepKey, value }) {
+    const v = String(value || '').trim()
+    if (!v) return ''
+
+    if (stepKey === 'idea') {
+      return [
+        `${v}.`,
+        '',
+        'Please generate a clear, conversion-focused site with:',
+        '- A strong hero (headline, subheadline, CTA)',
+        '- Social proof (testimonials or logos)',
+        '- Key sections (features/services, pricing, FAQ)',
+        '- A contact or booking section with a simple form',
+        '',
+        'Ask me 1–2 quick questions if needed, otherwise make sensible defaults.',
+      ].join('\n')
+    }
+
+    if (stepKey === 'goals') {
+      if (/collect leads/i.test(v)) {
+        return [
+          'Collect leads.',
+          '',
+          'Include a high-visibility lead capture (hero + mid-page), a clear value prop, and a simple form (name + email).',
+          'Add trust signals (testimonials, metrics, or logos) and a short FAQ to reduce friction.',
+        ].join('\n')
+      }
+      if (/sell products/i.test(v)) {
+        return [
+          'Sell products.',
+          '',
+          'Include product highlights, benefits, pricing, and a primary “Buy now” CTA.',
+          'Add sections for reviews, guarantees, shipping/returns, and an FAQ.',
+        ].join('\n')
+      }
+      if (/book calls|demos/i.test(v)) {
+        return [
+          'Book calls / demos.',
+          '',
+          'Include a strong problem/solution hero, outcomes/benefits, short case studies, and repeated “Book a call” CTAs.',
+          'Add an embedded scheduling section (or a clear button placeholder) and an FAQ addressing objections.',
+        ].join('\n')
+      }
+      return v
+    }
+
+    if (stepKey === 'audience') {
+      if (/busy professionals/i.test(v)) {
+        return [
+          'Busy professionals.',
+          '',
+          'Write concise, outcome-driven copy. Make the value obvious in the first 5 seconds.',
+          'Use skimmable sections, clear CTAs, and emphasize time-saving benefits, credibility, and a fast next step.',
+        ].join('\n')
+      }
+      if (/small business owners/i.test(v)) {
+        return [
+          'Small business owners.',
+          '',
+          'Focus on ROI, simplicity, and trust. Highlight practical benefits, pricing clarity, and real-world results.',
+          'Use friendly, straightforward language and strong contact/booking CTAs.',
+        ].join('\n')
+      }
+      if (/students\s*\/\s*beginners|students|beginners/i.test(v)) {
+        return [
+          'Students / beginners.',
+          '',
+          'Use approachable language and explain concepts briefly. Reduce intimidation and focus on quick wins.',
+          'Include a simple step-by-step “how it works”, helpful FAQs, and clear starter CTAs.',
+        ].join('\n')
+      }
+      return v
+    }
+
+    if (stepKey === 'designTheme') {
+      if (/minimal/i.test(v)) {
+        return [
+          'Design theme: Minimal & modern.',
+          '',
+          'Use plenty of whitespace, neutral palette, clean typography, and subtle borders/shadows.',
+          'Prioritize clarity and hierarchy over decoration.',
+        ].join('\n')
+      }
+      if (/bold/i.test(v)) {
+        return [
+          'Design theme: Bold & playful.',
+          '',
+          'Use vibrant accent colors, confident headings, and energetic section shapes.',
+          'Keep it fun but still readable and conversion-focused.',
+        ].join('\n')
+      }
+      if (/elegant/i.test(v)) {
+        return [
+          'Design theme: Elegant & premium.',
+          '',
+          'Use refined typography, higher-contrast imagery, restrained color accents, and spacious layout.',
+          'Emphasize quality, trust, and premium positioning.',
+        ].join('\n')
+      }
+      return `Design theme: ${v}`
+    }
+
+    return v
+  }
 
   function handleOpenInNewTab() {
     const html = previewHtml || ''
@@ -323,6 +453,8 @@ export default function BuilderPage() {
         onShare={handleShare}
         onPublish={handlePublish}
         isBusy={phase !== 'completed' || isPublishing}
+        settings={previewSettings}
+        onSettingsChange={setPreviewSettings}
       />
 
       <div className="flex min-h-0 flex-1">
@@ -347,10 +479,15 @@ export default function BuilderPage() {
               onInputChange={setInputDraft}
               onSend={handleSend}
               promptPills={intakePromptPills}
-              onPromptPillSelect={(text) => handleSend(text)}
+              onPromptPillSelect={(text) => {
+                const step = INTAKE_STEPS[intake.stepIndex]
+                const next = elaboratePillSelection({ stepKey: step?.key, value: text })
+                setInputDraft(next || text)
+              }}
               onMessageAction={handleMessageAction}
               phase={phase}
               entryMode={entryMode}
+              hidePromptArrows={!isChatOnly}
             />
           </div>
         </div>
@@ -367,6 +504,7 @@ export default function BuilderPage() {
             html={previewHtml}
             generationStep={generationStep}
             phase={phase}
+            settings={previewSettings}
           />
         </div>
         )}

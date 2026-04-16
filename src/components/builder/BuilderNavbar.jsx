@@ -26,16 +26,14 @@ export default function BuilderNavbar({
   onShare,
   onPublish,
   isBusy = false,
+  settings,
+  onSettingsChange,
 }) {
   const [isRenaming, setIsRenaming] = useState(false)
   const [draftName, setDraftName] = useState(projectName || 'Untitled project')
   const inputRef = useRef(null)
   const [shareStatus, setShareStatus] = useState('')
   const [publishStatus, setPublishStatus] = useState('')
-  const [settings, setSettings] = useState({
-    showGuides: true,
-    snapToGrid: false,
-  })
 
   useEffect(() => {
     if (!isRenaming) return
@@ -233,14 +231,14 @@ export default function BuilderNavbar({
                 <DropdownMenuLabel>Settings</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuCheckboxItem
-                  checked={settings.showGuides}
-                  onCheckedChange={(checked) => setSettings((s) => ({ ...s, showGuides: Boolean(checked) }))}
+                  checked={settings?.showGuides ?? true}
+                  onCheckedChange={(checked) => onSettingsChange?.((s) => ({ ...s, showGuides: Boolean(checked) }))}
                 >
                   Show guides
                 </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem
-                  checked={settings.snapToGrid}
-                  onCheckedChange={(checked) => setSettings((s) => ({ ...s, snapToGrid: Boolean(checked) }))}
+                  checked={settings?.snapToGrid ?? false}
+                  onCheckedChange={(checked) => onSettingsChange?.((s) => ({ ...s, snapToGrid: Boolean(checked) }))}
                 >
                   Snap to grid
                 </DropdownMenuCheckboxItem>

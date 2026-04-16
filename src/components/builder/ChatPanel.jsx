@@ -23,6 +23,7 @@ export default function ChatPanel({
   onMessageAction,
   phase,
   entryMode,
+  hidePromptArrows,
 }) {
   const scrollerRef = useRef(null)
   const promptsScrollerRef = useRef(null)
@@ -77,7 +78,7 @@ export default function ChatPanel({
   return (
     <div className="flex h-full flex-col">
       <div ref={scrollerRef} className="flex-1 overflow-auto p-3">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
           {hasMessages ? (
             messages.map((m) => (
               <ChatMessage
@@ -85,6 +86,7 @@ export default function ChatPanel({
                 messageId={m.id}
                 role={m.role}
                 content={m.content}
+                kind={m.kind}
                 createdAt={m.createdAt}
                 actions={m.actions}
                 onAction={onMessageAction}
@@ -104,26 +106,31 @@ export default function ChatPanel({
 
       {(showExamplePrompts || showPromptPills) && (
         <div className="px-3 py-3">
-          <div className="grid grid-cols-[auto_1fr_auto] items-center gap-2" aria-label="Prompt pills">
+          <div
+            className={hidePromptArrows ? 'grid grid-cols-1 items-center' : 'grid grid-cols-[auto_1fr_auto] items-center gap-2'}
+            aria-label="Prompt pills"
+          >
             {/* Left arrow (no overlap; hidden on mobile) */}
-            <div className="hidden sm:flex">
-              <button
-                type="button"
-                onClick={() => scrollPromptsBy('left')}
-                disabled={!canScrollPromptsLeft}
-                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] transition-colors hover:bg-[hsl(var(--secondary))] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-[hsl(var(--card))]"
-                aria-label="Scroll prompt pills left"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </button>
-            </div>
+            {!hidePromptArrows && (
+              <div className="hidden sm:flex">
+                <button
+                  type="button"
+                  onClick={() => scrollPromptsBy('left')}
+                  disabled={!canScrollPromptsLeft}
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] transition-colors hover:bg-[hsl(var(--secondary))] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-[hsl(var(--card))]"
+                  aria-label="Scroll prompt pills left"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </button>
+              </div>
+            )}
 
             {/* Scroll row */}
             <div>
               <div
                 ref={promptsScrollerRef}
                 className={[
-                  'no-scrollbar flex gap-2 overflow-x-hidden p-1',
+                  hidePromptArrows ? 'thin-scrollbar flex gap-2 overflow-x-auto p-1' : 'no-scrollbar flex gap-2 overflow-x-hidden p-1',
                   shouldCenterPrompts ? 'justify-center' : '',
                 ].join(' ')}
                 style={{ touchAction: 'pan-y' }}
@@ -153,17 +160,19 @@ export default function ChatPanel({
             </div>
 
             {/* Right arrow (no overlap; hidden on mobile) */}
-            <div className="hidden sm:flex justify-end">
-              <button
-                type="button"
-                onClick={() => scrollPromptsBy('right')}
-                disabled={!canScrollPromptsRight}
-                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] transition-colors hover:bg-[hsl(var(--secondary))] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-[hsl(var(--card))]"
-                aria-label="Scroll prompt pills right"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </button>
-            </div>
+            {!hidePromptArrows && (
+              <div className="hidden sm:flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => scrollPromptsBy('right')}
+                  disabled={!canScrollPromptsRight}
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] transition-colors hover:bg-[hsl(var(--secondary))] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-[hsl(var(--card))]"
+                  aria-label="Scroll prompt pills right"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
