@@ -1,7 +1,7 @@
 import { useMeta } from '@/hooks/useMeta'
 import { webPageSchema, SITE_URL } from '@/seo'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import BuilderNavbar from '@/components/builder/BuilderNavbar'
 import ChatPanel from '@/components/builder/ChatPanel'
 import PreviewPanel from '@/components/builder/PreviewPanel'
@@ -16,6 +16,7 @@ const GENERATION_MESSAGES = [
 
 export default function BuilderPage() {
   const navigate = useNavigate()
+  const location = useLocation()
   const [searchParams] = useSearchParams()
   const promptFromUrl = useMemo(() => (searchParams.get('prompt') || '').trim(), [searchParams])
   const initializedRef = useRef(false)
@@ -25,12 +26,20 @@ export default function BuilderPage() {
   const [messages, setMessages] = useState([])
   const [basePrompt, setBasePrompt] = useState('')
   const [inputDraft, setInputDraft] = useState('')
-  const [phase, setPhase] = useState('planning') // planning | generating | completed
+  // When arriving without an initial prompt, the builder should be immediately usable.
+  const [phase, setPhase] = useState('completed') // planning | generating | completed
   const [generationStep, setGenerationStep] = useState(0)
   const [previewHtml, setPreviewHtml] = useState('')
   const [activeView, setActiveView] = useState('preview') // preview | code | split
   const [projectName, setProjectName] = useState('Untitled project')
   const [isPublishing, setIsPublishing] = useState(false)
+
+  const entryMode = useMemo(() => {
+    if (promptFromUrl) return 'prompt'
+    const source = location.state?.source
+    if (source === 'signup') return 'signup'
+    return 'direct'
+  }, [promptFromUrl, location.state])
 
   useMeta({
     title:       'Builder | Orqis',
@@ -171,13 +180,14 @@ export default function BuilderPage() {
       />
 
       <div className="flex min-h-0 flex-1">
-        <div className="w-1/4 min-w-[320px] border-r border-[rgba(17,17,17,0.08)]">
+        <div className="w-1/4 min-w-[320px] border-r border-[hsl(var(--border))]">
           <ChatPanel
             messages={messages}
             inputValue={inputDraft}
             onInputChange={setInputDraft}
             onSend={handleSend}
             phase={phase}
+            entryMode={entryMode}
           />
         </div>
         <div className="w-3/4">

@@ -34,11 +34,11 @@ function DarkPromptInput() {
       {/* Typewriter overlay */}
       {!value && (
         <div
-          className="pointer-events-none absolute left-4 right-4 top-4 text-sm leading-relaxed text-[#6B6B6B]"
+          className="pointer-events-none absolute left-4 right-4 top-4 text-sm leading-relaxed text-[hsl(var(--surface-dark-muted))]"
           aria-hidden="true"
         >
           {placeholder}
-          <span className="cursor-blink ml-px inline-block h-[1em] w-px align-[-0.1em] bg-[#6B6B6B]" />
+          <span className="cursor-blink ml-px inline-block h-[1em] w-px align-[-0.1em] bg-[hsl(var(--surface-dark-muted))]" />
         </div>
       )}
 
@@ -60,7 +60,7 @@ function DarkPromptInput() {
       <div className="mt-1 flex items-center justify-between">
         <button
           type="button"
-          className="flex h-8 w-8 items-center justify-center rounded-full text-xl leading-none text-[#6B6B6B] transition-colors hover:bg-[rgba(255,255,255,0.08)] hover:text-white"
+          className="flex h-8 w-8 items-center justify-center rounded-full text-xl leading-none text-[hsl(var(--surface-dark-muted))] transition-colors hover:bg-[hsl(var(--primary-foreground)/0.08)] hover:text-[hsl(var(--surface-dark-foreground))]"
           aria-label="Attach images"
         >
           +
@@ -69,7 +69,7 @@ function DarkPromptInput() {
         <button
           type="submit"
           disabled={!value.trim()}
-          className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#111111] transition-colors hover:bg-[#F5F5F3] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#111111] disabled:cursor-not-allowed disabled:opacity-35"
+          className="flex h-8 w-8 items-center justify-center rounded-full bg-[hsl(var(--surface-dark-foreground))] text-[hsl(var(--surface-dark))] transition-colors hover:bg-[hsl(var(--surface-dark-foreground)/0.92)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--surface-dark-foreground))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--surface-dark))] disabled:cursor-not-allowed disabled:opacity-35"
           aria-label="Submit prompt"
         >
           <svg className="h-4 w-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -87,7 +87,7 @@ export default function CtaSection() {
       id="cta"
       className="relative overflow-hidden px-6 py-24"
       aria-label="Ready to build"
-      style={{ background: '#111111' }}
+      style={{ background: 'hsl(var(--surface-dark))' }}
     >
       <div className="relative mx-auto flex max-w-screen-xl flex-col items-center gap-8 text-center">
 

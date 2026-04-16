@@ -69,13 +69,13 @@ export default function HeroSection() {
         <div className="flex flex-1 flex-col items-center gap-6 text-center">
 
           {/* Headline — handwritten display font */}
-          <h1 className="font-display max-w-none text-[clamp(2.4rem,5.5vw,4rem)] font-bold leading-[0.98] tracking-tight text-[#111111]">
+          <h1 className="font-display max-w-none text-[clamp(2.4rem,5.5vw,4rem)] font-bold leading-[0.98] tracking-tight text-[hsl(var(--foreground))]">
             <span className="block whitespace-nowrap">Build your unique</span>
             <span className="block whitespace-nowrap">website in seconds</span>
           </h1>
 
           {/* Subtext */}
-          <p className="max-w-[28rem] text-[17px] leading-relaxed text-[#6B6B6B]">
+          <p className="max-w-[28rem] text-[17px] leading-relaxed text-[hsl(var(--muted-foreground))]">
             Turn your idea into a fully designed, ready-to-launch website, instantly.
           </p>
 
@@ -83,7 +83,7 @@ export default function HeroSection() {
           <PromptInput />
 
           {/* Social proof nudge */}
-          <p className="text-xs text-[#6B6B6B]">
+          <p className="text-xs text-[hsl(var(--muted-foreground))]">
             No account needed &nbsp;·&nbsp; Free to start
           </p>
 

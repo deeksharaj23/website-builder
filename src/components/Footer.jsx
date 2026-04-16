@@ -91,7 +91,7 @@ const SOCIAL = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-[rgba(255,255,255,0.10)] bg-[#111111] px-6 pb-10 pt-16">
+    <footer className="border-t border-[hsl(var(--border)/0.25)] bg-[hsl(var(--surface-dark))] px-6 pb-10 pt-16 text-[hsl(var(--surface-dark-foreground))]">
       <div className="mx-auto max-w-screen-xl">
 
         {/* Top row: brand + link columns */}
@@ -108,7 +108,7 @@ export default function Footer() {
               />
               <span className="text-base font-semibold leading-none text-white">Orqis</span>
             </div>
-            <p className="max-w-[200px] text-sm leading-relaxed text-[#6B6B6B]">
+            <p className="max-w-[200px] text-sm leading-relaxed text-[hsl(var(--surface-dark-muted))]">
               Turn any idea into a launch-ready website in seconds.
             </p>
 
@@ -119,7 +119,7 @@ export default function Footer() {
                   key={item.label}
                   href={item.href}
                   aria-label={item.label}
-                  className="flex h-8 w-8 items-center justify-center rounded-full text-[#6B6B6B] transition-colors hover:bg-[rgba(255,255,255,0.08)] hover:text-white"
+                  className="flex h-8 w-8 items-center justify-center rounded-full text-[hsl(var(--surface-dark-muted))] transition-colors hover:bg-[hsl(var(--primary-foreground)/0.08)] hover:text-[hsl(var(--surface-dark-foreground))]"
                 >
                   {item.icon}
                 </a>
@@ -130,7 +130,7 @@ export default function Footer() {
           {/* Link columns */}
           {FOOTER_LINKS.map((col) => (
             <div key={col.heading} className="flex flex-col gap-3">
-              <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#6B6B6B]">
+              <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[hsl(var(--surface-dark-muted))]">
                 {col.heading}
               </h3>
               <ul className="flex flex-col gap-2.5">
@@ -138,7 +138,7 @@ export default function Footer() {
                   <li key={typeof link === 'string' ? link : link.label}>
                     <a
                       href={typeof link === 'string' ? '#' : link.href}
-                      className="text-sm text-[#6B6B6B] transition-colors hover:text-white"
+                      className="text-sm text-[hsl(var(--surface-dark-muted))] transition-colors hover:text-[hsl(var(--surface-dark-foreground))]"
                     >
                       {typeof link === 'string' ? link : link.label}
                     </a>
@@ -151,26 +151,26 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-[rgba(255,255,255,0.10)] pt-6 sm:flex-row">
+        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-[hsl(var(--border)/0.25)] pt-6 sm:flex-row">
           <div className="flex flex-col items-center gap-2 text-center sm:items-start sm:text-left">
-            <p className="text-xs text-[#6B6B6B]">
+            <p className="text-xs text-[hsl(var(--surface-dark-muted))]">
               © {new Date().getFullYear()} Orqis. All rights reserved.
             </p>
             <a
               href="https://octopusbuilds.com"
               target="_blank"
               rel="noreferrer"
-              className="text-xs text-[#6B6B6B] transition-colors hover:text-white"
+              className="text-xs text-[hsl(var(--surface-dark-muted))] transition-colors hover:text-[hsl(var(--surface-dark-foreground))]"
             >
               Created by Octopus Builds
             </a>
           </div>
-          <div className="flex items-center gap-4 text-xs text-[#6B6B6B]">
-            <a href="#" className="transition-colors hover:text-white">Privacy</a>
+          <div className="flex items-center gap-4 text-xs text-[hsl(var(--surface-dark-muted))]">
+            <a href="#" className="transition-colors hover:text-[hsl(var(--surface-dark-foreground))]">Privacy</a>
             <span aria-hidden="true">·</span>
-            <a href="#" className="transition-colors hover:text-white">Terms</a>
+            <a href="#" className="transition-colors hover:text-[hsl(var(--surface-dark-foreground))]">Terms</a>
             <span aria-hidden="true">·</span>
-            <a href="#" className="transition-colors hover:text-white">Cookies</a>
+            <a href="#" className="transition-colors hover:text-[hsl(var(--surface-dark-foreground))]">Cookies</a>
           </div>
         </div>
 

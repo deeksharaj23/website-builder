@@ -13,20 +13,20 @@ export default function NotFoundPage() {
       aria-label="Page not found"
     >
       <p
-        className="font-display text-[clamp(3rem,8vw,6rem)] font-bold leading-none text-[#111111]"
+        className="font-display text-[clamp(3rem,8vw,6rem)] font-bold leading-none text-[hsl(var(--foreground))]"
         aria-hidden="true"
       >
         404
       </p>
-      <h1 className="text-2xl font-semibold text-[#111111]">
+      <h1 className="text-2xl font-semibold text-[hsl(var(--foreground))]">
         Page not found
       </h1>
-      <p className="max-w-sm text-[#6B6B6B]">
+      <p className="max-w-sm text-[hsl(var(--muted-foreground))]">
         This page doesn&apos;t exist (yet).
       </p>
       <Link
         to="/"
-        className="rounded-full bg-[#111111] px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[rgba(17,17,17,0.85)]"
+        className="rounded-full bg-[hsl(var(--primary))] px-6 py-3 text-sm font-medium text-[hsl(var(--primary-foreground))] transition-colors hover:bg-[hsl(var(--primary)/0.85)]"
       >
         Back to home →
       </Link>

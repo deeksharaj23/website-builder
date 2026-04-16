@@ -27,18 +27,18 @@ export default function FloatingCard({
       {/* Label pill */}
       <span
         className="inline-block rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-widest"
-        style={{ backgroundColor: labelBg, color: '#111111' }}
+        style={{ backgroundColor: labelBg, color: 'hsl(var(--foreground))' }}
       >
         {label}
       </span>
 
       {/* Title */}
-      <p className="mt-3 text-base font-semibold leading-snug text-[#111111]">
+      <p className="mt-3 text-base font-semibold leading-snug text-[hsl(var(--foreground))]">
         {title}
       </p>
 
       {/* Description */}
-      <p className="mt-1 text-sm leading-relaxed text-[#6B6B6B]">{desc}</p>
+      <p className="mt-1 text-sm leading-relaxed text-[hsl(var(--muted-foreground))]">{desc}</p>
 
       {/* Optional visual */}
       {children && <div className="mt-4">{children}</div>}

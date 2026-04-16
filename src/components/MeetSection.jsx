@@ -40,20 +40,20 @@ function StepPanel({ activeStep }) {
         ].join(' ')}
       >
         <div className="w-full max-w-sm">
-          <div className="rounded-2xl bg-[#F5F5F3] p-4 pb-3">
-            <p className="text-sm leading-relaxed text-[#111111]">
+          <div className="rounded-2xl bg-[hsl(var(--surface))] p-4 pb-3">
+            <p className="text-sm leading-relaxed text-[hsl(var(--foreground))]">
               Create a{' '}
               <span className="rounded bg-[#CFE3F0] px-1 font-medium text-[#2A6080]">
                 website
               </span>
-              <span className="ml-px inline-block h-[1em] w-px align-[-0.1em] bg-[#111111] opacity-80 cursor-blink" />
+              <span className="ml-px inline-block h-[1em] w-px align-[-0.1em] bg-[hsl(var(--foreground))] opacity-80 cursor-blink" />
             </p>
             <div className="mt-3 h-8" />
             <div className="mt-2 flex items-center justify-between">
-              <span className="flex h-7 w-7 items-center justify-center rounded-full text-base text-[#6B6B6B]">+</span>
+              <span className="flex h-7 w-7 items-center justify-center rounded-full text-base text-[hsl(var(--muted-foreground))]">+</span>
               <div className="flex items-center gap-2">
-                <span className="rounded-full px-2 py-1 text-[11px] text-[#6B6B6B]">Build ▾</span>
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#111111] text-white">
+                <span className="rounded-full px-2 py-1 text-[11px] text-[hsl(var(--muted-foreground))]">Build ▾</span>
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]">
                   <svg className="h-3.5 w-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M8 13V3M3 8l5-5 5 5" />
                   </svg>
@@ -75,7 +75,7 @@ function StepPanel({ activeStep }) {
           <div className="rounded-2xl bg-[rgba(255,255,255,0.06)] p-4 space-y-2">
             <div className="flex items-center gap-2 mb-3">
               <span className="h-2 w-2 rounded-full bg-[#D7EAD9]" />
-              <span className="text-[11px] font-medium uppercase tracking-widest text-[#6B6B6B]">Building your page</span>
+              <span className="text-[11px] font-medium uppercase tracking-widest text-[hsl(var(--surface-dark-muted))]">Building your page</span>
             </div>
             <div className="h-3 w-3/4 rounded-full bg-[rgba(255,255,255,0.12)]" />
             <div className="h-2 w-full rounded-full bg-[rgba(255,255,255,0.08)]" />
@@ -88,8 +88,8 @@ function StepPanel({ activeStep }) {
           ].map((item) => (
             <div key={item.label} className="rounded-2xl bg-[rgba(255,255,255,0.06)] px-4 py-3">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-[#6B6B6B]">{item.label}</span>
-                <span className={`text-[10px] font-medium ${item.done ? 'text-[#D7EAD9]' : 'text-[#6B6B6B]'}`}>
+                <span className="text-xs text-[hsl(var(--surface-dark-muted))]">{item.label}</span>
+                <span className={`text-[10px] font-medium ${item.done ? 'text-[#D7EAD9]' : 'text-[hsl(var(--surface-dark-muted))]'}`}>
                   {item.done ? 'done' : 'building'}
                 </span>
               </div>
@@ -109,17 +109,17 @@ function StepPanel({ activeStep }) {
         ].join(' ')}
       >
         <div className="w-full max-w-sm space-y-3">
-          <div className="overflow-hidden rounded-2xl bg-[#F5F5F3]">
-            <div className="flex items-center justify-between border-b border-[rgba(17,17,17,0.10)] px-4 py-2.5">
+          <div className="overflow-hidden rounded-2xl bg-[hsl(var(--surface))]">
+            <div className="flex items-center justify-between border-b border-[hsl(var(--border))] px-4 py-2.5">
               <div className="h-2 w-16 rounded-full bg-[rgba(17,17,17,0.10)]" />
-              <div className="h-6 w-16 rounded-full bg-[#111111]" />
+              <div className="h-6 w-16 rounded-full bg-[hsl(var(--primary))]" />
             </div>
             <div className="px-4 py-5 space-y-2">
               <div className="h-4 w-2/3 rounded-full bg-[rgba(17,17,17,0.14)]" />
               <div className="h-3 w-full rounded-full bg-[rgba(17,17,17,0.10)]" />
               <div className="h-3 w-5/6 rounded-full bg-[rgba(17,17,17,0.10)]" />
               <div className="mt-3 flex gap-2">
-                <div className="h-8 w-24 rounded-full bg-[#111111]" />
+                <div className="h-8 w-24 rounded-full bg-[hsl(var(--primary))]" />
                 <div className="h-8 w-20 rounded-full bg-[#EFEFEF]" />
               </div>
             </div>
@@ -131,7 +131,7 @@ function StepPanel({ activeStep }) {
           </div>
           <div className="flex items-center gap-3 rounded-2xl bg-[rgba(255,255,255,0.06)] px-4 py-3">
             <span className="h-2 w-2 rounded-full bg-[#D7EAD9]" />
-            <span className="text-xs text-[#6B6B6B]">yourpage.builder.app</span>
+            <span className="text-xs text-[hsl(var(--surface-dark-muted))]">yourpage.builder.app</span>
             <span className="ml-auto rounded-full bg-[rgba(215,234,217,0.16)] px-2.5 py-1 text-[10px] font-semibold text-[#D7EAD9]">
               Live
             </span>
@@ -158,7 +158,7 @@ export default function MeetSection() {
   return (
     <section
       id="how-it-works"
-      className="bg-[#111111] px-6 py-24"
+      className="bg-[hsl(var(--surface-dark))] px-6 py-24"
       aria-label="Meet your web builder"
     >
       <div className="mx-auto max-w-screen-xl">
@@ -167,7 +167,7 @@ export default function MeetSection() {
         <h2 className="font-display mb-12 text-center text-[clamp(2rem,4.5vw,3rem)] font-bold leading-tight text-white">
           Meet your web builder
         </h2>
-        <p className="-mt-8 mb-12 mx-auto max-w-2xl text-center text-sm text-[#6B6B6B]">
+        <p className="-mt-8 mb-12 mx-auto max-w-2xl text-center text-sm text-[hsl(var(--surface-dark-muted))]">
           Describe your idea, generate instantly,
           <br />
           refine with ease, and launch, all in one seamless flow.
@@ -201,7 +201,7 @@ export default function MeetSection() {
                     className="inline-block rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-widest transition-all duration-300"
                     style={{
                       backgroundColor: isActive ? step.labelBg : 'rgba(255,255,255,0.10)',
-                      color: isActive ? step.labelText : '#6B6B6B',
+                      color: isActive ? step.labelText : 'hsl(var(--surface-dark-muted))',
                     }}
                   >
                     {step.label}
@@ -211,7 +211,7 @@ export default function MeetSection() {
                   <span
                     className={[
                       'text-xl font-semibold leading-snug transition-colors duration-300',
-                      isActive ? 'text-white' : 'text-[#6B6B6B]',
+                      isActive ? 'text-white' : 'text-[hsl(var(--surface-dark-muted))]',
                     ].join(' ')}
                   >
                     {step.title}
@@ -226,7 +226,7 @@ export default function MeetSection() {
                     className="grid transition-[grid-template-rows] duration-300 ease-in-out"
                     style={{ gridTemplateRows: isActive ? '1fr' : '0fr' }}
                   >
-                    <span className="overflow-hidden text-sm leading-relaxed text-[#6B6B6B]">
+                    <span className="overflow-hidden text-sm leading-relaxed text-[hsl(var(--surface-dark-muted))]">
                       {step.desc}
                     </span>
                   </span>

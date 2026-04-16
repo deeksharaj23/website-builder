@@ -18,6 +18,9 @@ import {
   HomePage,
   TemplatesPage,
   BuilderPage,
+  LoginPage,
+  SignupPage,
+  ProfilePage,
   NotFoundPage,
 } from '@/pages/index.js'
 
@@ -41,9 +44,35 @@ const routes = [
   {
     path: '/builder',
     Page: BuilderPage,
+    requiresAuth: true,
     meta: {
       title:       'Builder | Orqis',
       description: 'Describe your idea, generate instantly, refine with ease, and launch, all in one seamless flow.',
+    },
+  },
+  {
+    path: '/login',
+    Page: LoginPage,
+    meta: {
+      title:       'Login | Orqis',
+      description: 'Sign in to access the Orqis builder.',
+    },
+  },
+  {
+    path: '/signup',
+    Page: SignupPage,
+    meta: {
+      title:       'Sign up | Orqis',
+      description: 'Create your Orqis account and start building.',
+    },
+  },
+  {
+    path: '/profile',
+    Page: ProfilePage,
+    requiresAuth: true,
+    meta: {
+      title:       'Profile | Orqis',
+      description: 'Manage your Orqis profile.',
     },
   },
   // Catch-all — must stay last

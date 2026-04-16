@@ -50,16 +50,16 @@ export default function PromptInput() {
   return (
     <form
       onSubmit={(e) => { e.preventDefault(); submit() }}
-      className="relative w-full max-w-2xl rounded-3xl bg-[#EFEFEF] p-3 pb-2.5 text-center ring-1 ring-[rgba(17,17,17,0.08)]"
+      className="relative w-full max-w-2xl rounded-3xl bg-[hsl(var(--secondary))] p-3 pb-2.5 text-center ring-1 ring-[hsl(var(--border)/0.65)]"
       aria-label="AI prompt form"
     >
       {!value && (
         <div
-          className="pointer-events-none absolute left-3 right-3 top-3 text-center text-sm leading-relaxed text-[#6B6B6B]"
+          className="pointer-events-none absolute left-3 right-3 top-3 text-center text-sm leading-relaxed text-[hsl(var(--muted-foreground))]"
           aria-hidden="true"
         >
           {placeholder}
-          <span className="cursor-blink ml-px inline-block h-[1em] w-px align-[-0.1em] bg-[#6B6B6B]" />
+          <span className="cursor-blink ml-px inline-block h-[1em] w-px align-[-0.1em] bg-[hsl(var(--muted-foreground))]" />
         </div>
       )}
 
@@ -71,7 +71,7 @@ export default function PromptInput() {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={handleKeyDown}
-        className="w-full resize-none bg-transparent text-center text-sm leading-relaxed text-[#111111] outline-none"
+        className="w-full resize-none bg-transparent text-center text-sm leading-relaxed text-[hsl(var(--foreground))] outline-none"
         aria-label="Website prompt"
         autoComplete="off"
         spellCheck={false}
@@ -92,13 +92,13 @@ export default function PromptInput() {
           {images.map((file, idx) => (
             <span
               key={`${file.name}-${file.size}-${file.lastModified}-${idx}`}
-              className="flex items-center gap-2 rounded-full bg-[#E2E2E0] px-3 py-1 text-xs text-[#111111]"
+              className="flex items-center gap-2 rounded-full bg-[hsl(var(--accent))] px-3 py-1 text-xs text-[hsl(var(--accent-foreground))]"
             >
               <span className="max-w-[180px] truncate">{file.name}</span>
               <button
                 type="button"
                 onClick={() => removeImage(idx)}
-                className="flex h-5 w-5 items-center justify-center rounded-full text-[#6B6B6B] transition-colors hover:bg-[#D7D7D5] hover:text-[#111111]"
+                className="flex h-5 w-5 items-center justify-center rounded-full text-[hsl(var(--muted-foreground))] transition-colors hover:bg-[hsl(var(--secondary))] hover:text-[hsl(var(--foreground))]"
                 aria-label={`Remove ${file.name}`}
               >
                 ×
@@ -112,7 +112,7 @@ export default function PromptInput() {
         <button
           type="button"
           onClick={openFilePicker}
-          className="flex h-8 w-8 items-center justify-center rounded-full text-xl leading-none text-[#6B6B6B] transition-colors hover:bg-[#E2E2E0] hover:text-[#111111]"
+          className="flex h-8 w-8 items-center justify-center rounded-full text-xl leading-none text-[hsl(var(--muted-foreground))] transition-colors hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--foreground))]"
           aria-label="Attach images"
         >
           +
@@ -121,7 +121,7 @@ export default function PromptInput() {
         <button
           type="submit"
           disabled={!value.trim()}
-          className="flex h-8 w-8 items-center justify-center rounded-full bg-[#111111] text-white transition-colors hover:bg-[rgba(17,17,17,0.85)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#111111] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-35"
+          className="flex h-8 w-8 items-center justify-center rounded-full bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] transition-colors hover:bg-[hsl(var(--primary)/0.85)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-35"
           aria-label="Submit prompt"
         >
           <svg className="h-4 w-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

@@ -37,7 +37,7 @@ export default function StatsSection() {
   return (
     <section
       id="numbers"
-      className="bg-[#111111] px-6 py-24"
+      className="bg-[hsl(var(--surface-dark))] px-6 py-24"
       aria-label="Orqis in numbers"
     >
       <div className="mx-auto max-w-screen-xl text-center">
@@ -46,7 +46,7 @@ export default function StatsSection() {
         <h2 className="font-display text-[clamp(2rem,4.5vw,3rem)] font-bold leading-tight text-white">
           Orqis in numbers
         </h2>
-        <p className="mx-auto mt-2 max-w-2xl text-sm text-[#6B6B6B]">
+        <p className="mx-auto mt-2 max-w-2xl text-sm text-[hsl(var(--surface-dark-muted))]">
           Ideas are turning into live pages every second.
           <br />
           Explore the speed, scale, and momentum behind it.
@@ -57,23 +57,16 @@ export default function StatsSection() {
           {STATS.map((stat) => (
             <div
               key={stat.key}
-              className="group flex min-h-[160px] flex-col items-center justify-center gap-4 rounded-3xl bg-[#1A1A1A] p-6 transition-transform duration-200 hover:-translate-y-0.5"
+              className="group relative flex min-h-[160px] flex-col items-center justify-center gap-4 overflow-hidden rounded-3xl bg-[hsl(var(--surface-dark-elevated))] p-6 ring-1 ring-transparent transition-transform duration-200 hover:-translate-y-0.5 hover:ring-[color:var(--accent)]"
               style={{
-                boxShadow: 'inset 0 0 0 0.5px transparent',
-                backgroundColor: '#1A1A1A',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = `inset 0 0 0 0.5px ${stat.accent}`
-                e.currentTarget.style.backgroundColor = hexToRgba(stat.accent, 0.15)
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = 'inset 0 0 0 0.5px transparent'
-                e.currentTarget.style.backgroundColor = '#1A1A1A'
+                '--accent': stat.accent,
               }}
             >
+              <div className="pointer-events-none absolute inset-0 bg-[color:var(--accent)] opacity-0 transition-opacity duration-200 group-hover:opacity-10" aria-hidden="true" />
+
               {/* Icon */}
               <span
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full"
+                className="relative inline-flex h-10 w-10 items-center justify-center rounded-full"
                 style={{
                   backgroundColor: hexToRgba(stat.accent, 0.18),
                   boxShadow: `inset 0 0 0 0.5px ${hexToRgba(stat.accent, 0.45)}`,
@@ -84,12 +77,12 @@ export default function StatsSection() {
               </span>
 
               {/* Large number */}
-              <p className="text-[clamp(2.8rem,6vw,4rem)] font-bold leading-none tracking-tight text-white transition-colors duration-200 group-hover:text-white">
+              <p className="relative text-[clamp(2.8rem,6vw,4rem)] font-bold leading-none tracking-tight text-[hsl(var(--surface-dark-foreground))]">
                 {stat.value}
               </p>
 
               {/* Label */}
-              <p className="text-[15px] leading-snug text-[#6B6B6B] transition-colors duration-200 group-hover:text-white">
+              <p className="relative text-[15px] leading-snug text-[hsl(var(--surface-dark-muted))] transition-colors duration-200 group-hover:text-[hsl(var(--surface-dark-foreground))]">
                 {stat.label}
               </p>
             </div>

@@ -2,6 +2,7 @@ import { createElement } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import RootLayout from '@/layouts/RootLayout'
 import routes from '@/routes'
+import RequireAuth from '@/auth/RequireAuth'
 
 /**
  * App renders the central route tree.
@@ -15,8 +16,12 @@ export default function App() {
   return (
     <Routes>
       <Route element={<RootLayout />}>
-        {routes.map(({ path, Page }) => (
-          <Route key={path} path={path} element={createElement(Page)} />
+        {routes.map(({ path, Page, requiresAuth }) => (
+          <Route
+            key={path}
+            path={path}
+            element={requiresAuth ? <RequireAuth>{createElement(Page)}</RequireAuth> : createElement(Page)}
+          />
         ))}
       </Route>
     </Routes>

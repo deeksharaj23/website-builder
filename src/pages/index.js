@@ -4,4 +4,7 @@ import { lazy } from 'react'
 export const HomePage      = lazy(() => import('./HomePage'))
 export const TemplatesPage = lazy(() => import('./TemplatesPage'))
 export const BuilderPage   = lazy(() => import('./BuilderPage'))
+export const LoginPage     = lazy(() => import('./LoginPage'))
+export const SignupPage    = lazy(() => import('./SignupPage'))
+export const ProfilePage   = lazy(() => import('./ProfilePage'))
 export const NotFoundPage  = lazy(() => import('./NotFoundPage'))

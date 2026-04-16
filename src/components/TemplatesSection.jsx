@@ -55,8 +55,8 @@ function TemplatePreview({ id }) {
     /* Dark editorial — name-card hero */
     case 'portfolio':
       return (
-        <div className="flex h-full flex-col items-center justify-center bg-[#111111] p-6">
-          <p className="text-[10px] uppercase tracking-[0.3em] text-[#6B6B6B]">Creative developer</p>
+        <div className="flex h-full flex-col items-center justify-center bg-[hsl(var(--surface-dark))] p-6">
+          <p className="text-[10px] uppercase tracking-[0.3em] text-[hsl(var(--surface-dark-muted))]">Creative developer</p>
           <p className="font-display mt-2 text-2xl font-bold text-white">Alex Carter</p>
           <div className="mt-3 flex gap-1.5">
             <div className="h-1 w-10 rounded-full bg-[#CFE3F0]" />
@@ -69,10 +69,10 @@ function TemplatePreview({ id }) {
     case 'slides':
       return (
         <div className="flex h-full flex-col items-center justify-center bg-[#E6DDF2] p-6">
-          <p className="text-[10px] uppercase tracking-[0.28em] text-[#6B6B6B]">
+          <p className="text-[10px] uppercase tracking-[0.28em] text-[hsl(var(--surface-muted))]">
             Slide Deck
           </p>
-          <p className="mt-2 text-lg font-semibold text-[#111111]">Make it Stick</p>
+          <p className="mt-2 text-lg font-semibold text-[hsl(var(--surface-foreground))]">Make it Stick</p>
         </div>
       )
 
@@ -80,10 +80,10 @@ function TemplatePreview({ id }) {
     case 'architecture':
       return (
         <div className="flex h-full flex-col items-center justify-center bg-[#EFEFEF] p-6">
-          <p className="text-center text-[10px] font-semibold uppercase tracking-[0.36em] text-[#6B6B6B]">
+          <p className="text-center text-[10px] font-semibold uppercase tracking-[0.36em] text-[hsl(var(--surface-muted))]">
             Minimal
           </p>
-          <p className="mt-1 text-center text-xl font-bold uppercase tracking-wide text-[#111111]">
+          <p className="mt-1 text-center text-xl font-bold uppercase tracking-wide text-[hsl(var(--surface-foreground))]">
             Architecture
           </p>
           <div className="mt-4 h-px w-16 bg-[rgba(17,17,17,0.12)]" />
@@ -93,15 +93,15 @@ function TemplatePreview({ id }) {
     /* Cream + lavender — fashion blog */
     case 'fashion':
       return (
-        <div className="flex h-full flex-col bg-[#F5F5F3] p-5">
+        <div className="flex h-full flex-col bg-[hsl(var(--surface))] p-5">
           {/* Top nav line */}
           <div className="flex items-center justify-between">
             <div className="h-2 w-12 rounded-full bg-[rgba(17,17,17,0.10)]" />
             <div className="h-5 w-16 rounded-full bg-[#E6DDF2]" />
           </div>
           <div className="mt-auto">
-            <p className="text-[9px] uppercase tracking-[0.28em] text-[#6B6B6B]">Collection</p>
-            <p className="font-display mt-1 text-2xl font-bold text-[#111111]">VESPER</p>
+            <p className="text-[9px] uppercase tracking-[0.28em] text-[hsl(var(--surface-muted))]">Collection</p>
+            <p className="font-display mt-1 text-2xl font-bold text-[hsl(var(--surface-foreground))]">VESPER</p>
             <div className="mt-2 h-1.5 w-20 rounded-full bg-[#E6DDF2]" />
           </div>
         </div>
@@ -111,11 +111,11 @@ function TemplatePreview({ id }) {
     case 'event':
       return (
         <div className="flex h-full flex-col items-center justify-center gap-3 bg-white p-5">
-          <p className="text-center text-base font-semibold leading-snug text-[#111111]">
+          <p className="text-center text-base font-semibold leading-snug text-[hsl(var(--surface-foreground))]">
             Discover{' '}
             <span className="rounded-full bg-[#CFE3F0] px-2 py-0.5 text-[#2A6080]">events</span>
           </p>
-          <p className="text-center text-base font-semibold text-[#111111]">near you</p>
+          <p className="text-center text-base font-semibold text-[hsl(var(--surface-foreground))]">near you</p>
           <div className="mt-1 flex gap-1.5">
             {['#CFE3F0','#D7EAD9','#F3D9C6'].map((c) => (
               <span key={c} className="h-2 w-2 rounded-full" style={{ background: c }} />
@@ -160,7 +160,7 @@ function TemplatePreview({ id }) {
     /* Deep dark + shape — ecommerce */
     case 'ecommerce':
       return (
-        <div className="flex h-full flex-col bg-[#111111] p-5">
+        <div className="flex h-full flex-col bg-[hsl(var(--surface-dark))] p-5">
           <div className="flex items-center justify-between">
             <div className="h-2 w-10 rounded-full bg-[rgba(255,255,255,0.12)]" />
             <div className="h-6 w-14 rounded-full bg-white" />
@@ -189,7 +189,7 @@ function TemplateCard({ template }) {
       {/* Meta */}
       <div>
         <h3 className="text-sm font-semibold text-white">{template.name}</h3>
-        <p className="mt-0.5 text-sm text-[#6B6B6B]">{template.desc}</p>
+        <p className="mt-0.5 text-sm text-[hsl(var(--surface-dark-muted))]">{template.desc}</p>
       </div>
     </article>
   )
@@ -200,7 +200,7 @@ export default function TemplatesSection() {
   return (
     <section
       id="templates"
-      className="bg-[#111111] px-6 py-24"
+      className="bg-[hsl(var(--surface-dark))] px-6 py-24"
       aria-label="Discover templates"
     >
       <div className="mx-auto max-w-screen-xl">
@@ -211,7 +211,7 @@ export default function TemplatesSection() {
             <h2 className="font-display text-[clamp(2rem,4.5vw,3rem)] font-bold leading-tight text-white">
               Discover templates
             </h2>
-            <p className="mx-auto mt-2 max-w-2xl text-sm text-[#6B6B6B]">
+            <p className="mx-auto mt-2 max-w-2xl text-sm text-[hsl(var(--surface-dark-muted))]">
               Pick a template, make it yours,
               <br />
               and launch without the usual friction.

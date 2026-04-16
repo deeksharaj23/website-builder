@@ -23,7 +23,7 @@ const FAQS = [
 
 function FaqItem({ item }) {
   return (
-    <details className="group rounded-2xl bg-[#1A1A1A] p-5 ring-[0.5px] ring-[rgba(255,255,255,0.10)]">
+    <details className="group rounded-2xl bg-[hsl(var(--surface-dark-elevated))] p-5 ring-1 ring-[hsl(var(--border)/0.12)]">
       <summary className="flex cursor-pointer list-none items-center justify-between gap-4">
         <span className="text-sm font-semibold text-white">{item.q}</span>
         <span
@@ -33,7 +33,7 @@ function FaqItem({ item }) {
           +
         </span>
       </summary>
-      <p className="mt-3 text-sm leading-relaxed text-[#6B6B6B]">
+      <p className="mt-3 text-sm leading-relaxed text-[hsl(var(--surface-dark-muted))]">
         {item.a}
       </p>
     </details>
@@ -44,7 +44,7 @@ export default function FaqsSection() {
   return (
     <section
       id="faqs"
-      className="bg-[#111111] px-6 py-24"
+      className="bg-[hsl(var(--surface-dark))] px-6 py-24"
       aria-label="Frequently asked questions"
     >
       <div className="mx-auto max-w-screen-xl">
@@ -52,7 +52,7 @@ export default function FaqsSection() {
           <h2 className="font-display text-[clamp(2rem,4.5vw,3rem)] font-bold leading-tight text-white">
             FAQs
           </h2>
-          <p className="mx-auto mt-2 max-w-2xl text-sm text-[#6B6B6B]">
+          <p className="mx-auto mt-2 max-w-2xl text-sm text-[hsl(var(--surface-dark-muted))]">
             Everything you need to know to go from idea to launch—fast.
           </p>
         </div>

@@ -83,17 +83,16 @@ export default function BuilderNavbar({
   }
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-[rgba(17,17,17,0.08)] bg-white">
-      <div className="flex h-14 items-center justify-between gap-3 px-4">
+    <header className="sticky top-0 z-40 w-full border-b border-[hsl(var(--border))] bg-[hsl(var(--card))]">
+      <div className="flex h-12 items-center justify-between gap-3 px-4">
         {/* Left */}
-        <div className="flex min-w-0 items-start gap-2">
+        <div className="flex min-w-0 items-center gap-2">
           {onBack && (
             <Button
               type="button"
               variant="ghost"
               size="icon"
               onClick={onBack}
-              className="mt-0.5"
               aria-label="Back"
             >
               <ChevronLeft className="h-4 w-4" />
@@ -120,7 +119,7 @@ export default function BuilderNavbar({
                 <button
                   type="button"
                   onClick={beginRename}
-                  className="min-w-0 truncate rounded-sm bg-[hsl(var(--accent))] px-2 py-1 text-left text-sm font-semibold text-[#111111] hover:underline"
+                  className="min-w-0 truncate rounded-sm bg-[hsl(var(--accent))] px-2 py-1 text-left text-sm font-semibold text-[hsl(var(--accent-foreground))] hover:underline"
                   aria-label="Rename project"
                   title="Click to rename"
                 >
@@ -144,10 +143,6 @@ export default function BuilderNavbar({
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-            </div>
-
-            <div className="hidden truncate text-xs text-[#6B6B6B] sm:block">
-              Previewing last saved version
             </div>
           </div>
         </div>
@@ -238,7 +233,7 @@ export default function BuilderNavbar({
               Publish
             </Button>
             {(shareStatus || publishStatus) && (
-              <span className="hidden text-xs text-[#6B6B6B] sm:inline">
+              <span className="hidden text-xs text-[hsl(var(--muted-foreground))] sm:inline">
                 {shareStatus || publishStatus}
               </span>
             )}
