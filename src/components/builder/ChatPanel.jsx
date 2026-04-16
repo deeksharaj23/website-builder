@@ -18,6 +18,9 @@ export default function ChatPanel({
   inputValue,
   onInputChange,
   onSend,
+  promptPills,
+  onPromptPillSelect,
+  onMessageAction,
   phase,
   entryMode,
 }) {
@@ -29,6 +32,7 @@ export default function ChatPanel({
   const shouldCenterPrompts = !canScrollPromptsLeft && !canScrollPromptsRight
 
   const showExamplePrompts = useMemo(() => !hasMessages && entryMode === 'direct', [hasMessages, entryMode])
+  const showPromptPills = Array.isArray(promptPills) && promptPills.length > 0
 
   useEffect(() => {
     const el = scrollerRef.current
@@ -37,7 +41,7 @@ export default function ChatPanel({
   }, [messages])
 
   useEffect(() => {
-    if (!showExamplePrompts) return
+    if (!showExamplePrompts && !showPromptPills) return
     const el = promptsScrollerRef.current
     if (!el) return
 
@@ -61,7 +65,7 @@ export default function ChatPanel({
       el.removeEventListener('scroll', update)
       window.removeEventListener('resize', update)
     }
-  }, [showExamplePrompts])
+  }, [showExamplePrompts, showPromptPills])
 
   function scrollPromptsBy(direction) {
     const el = promptsScrollerRef.current
@@ -76,7 +80,15 @@ export default function ChatPanel({
         <div className="flex flex-col gap-2">
           {hasMessages ? (
             messages.map((m) => (
-              <ChatMessage key={m.id} role={m.role} content={m.content} createdAt={m.createdAt} />
+              <ChatMessage
+                key={m.id}
+                messageId={m.id}
+                role={m.role}
+                content={m.content}
+                createdAt={m.createdAt}
+                actions={m.actions}
+                onAction={onMessageAction}
+              />
             ))
           ) : (
             entryMode === 'direct' ? null : (
@@ -90,9 +102,9 @@ export default function ChatPanel({
         </div>
       </div>
 
-      {showExamplePrompts && (
+      {(showExamplePrompts || showPromptPills) && (
         <div className="px-3 py-3">
-          <div className="grid grid-cols-[auto_1fr_auto] items-center gap-2" aria-label="Example prompts">
+          <div className="grid grid-cols-[auto_1fr_auto] items-center gap-2" aria-label="Prompt pills">
             {/* Left arrow (no overlap; hidden on mobile) */}
             <div className="hidden sm:flex">
               <button
@@ -100,7 +112,7 @@ export default function ChatPanel({
                 onClick={() => scrollPromptsBy('left')}
                 disabled={!canScrollPromptsLeft}
                 className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] transition-colors hover:bg-[hsl(var(--secondary))] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-[hsl(var(--card))]"
-                aria-label="Scroll example prompts left"
+                aria-label="Scroll prompt pills left"
               >
                 <ChevronLeft className="h-4 w-4" />
               </button>
@@ -115,16 +127,22 @@ export default function ChatPanel({
                   shouldCenterPrompts ? 'justify-center' : '',
                 ].join(' ')}
                 style={{ touchAction: 'pan-y' }}
-                aria-label="Example prompts"
+                aria-label="Prompt pills"
               >
-                {EXAMPLE_PROMPTS.map((prompt, idx) => (
+                {(showPromptPills ? promptPills : EXAMPLE_PROMPTS).map((prompt, idx) => (
                   <button
                     key={prompt}
                     type="button"
-                    onClick={() => onInputChange?.(prompt)}
-                    className="flex-shrink-0 rounded-2xl p-3 text-left text-[13px] text-[hsl(var(--foreground))] ring-1 ring-[hsl(var(--border)/0.7)] transition-[filter] hover:brightness-[0.97]"
+                    onClick={() => {
+                      if (showPromptPills) onPromptPillSelect?.(prompt)
+                      else onInputChange?.(prompt)
+                    }}
+                    className={[
+                      'flex-shrink-0 text-left text-[13px] text-[hsl(var(--foreground))] ring-1 ring-[hsl(var(--border)/0.7)] transition-[filter] hover:brightness-[0.97]',
+                      showPromptPills ? 'rounded-full px-4 py-2 font-medium' : 'rounded-2xl p-3',
+                    ].join(' ')}
                     style={{
-                      width: 'min(297px, 66%)',
+                      width: showPromptPills ? 'auto' : 'min(297px, 66%)',
                       backgroundColor: PROMPT_CARD_COLORS[idx % PROMPT_CARD_COLORS.length],
                     }}
                   >
@@ -141,7 +159,7 @@ export default function ChatPanel({
                 onClick={() => scrollPromptsBy('right')}
                 disabled={!canScrollPromptsRight}
                 className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] transition-colors hover:bg-[hsl(var(--secondary))] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-[hsl(var(--card))]"
-                aria-label="Scroll example prompts right"
+                aria-label="Scroll prompt pills right"
               >
                 <ChevronRight className="h-4 w-4" />
               </button>

@@ -14,6 +14,37 @@ const GENERATION_MESSAGES = [
   'Finalizing layout…',
 ]
 
+const INTAKE_STEPS = [
+  {
+    key: 'idea',
+    label: 'Idea',
+    question: 'What’s the idea for the website?',
+    suggestions: [
+      'A landing page for a yoga studio',
+      'A portfolio for a product designer',
+      'A waitlist page for an upcoming app',
+    ],
+  },
+  {
+    key: 'goals',
+    label: 'Goals',
+    question: 'What are the main goals for this site? (e.g. get leads, sell, book calls)',
+    suggestions: ['Collect leads', 'Sell products', 'Book calls / demos'],
+  },
+  {
+    key: 'audience',
+    label: 'Audience',
+    question: 'Who is the target audience?',
+    suggestions: ['Busy professionals', 'Small business owners', 'Students / beginners'],
+  },
+  {
+    key: 'designTheme',
+    label: 'Design theme',
+    question: 'What design theme should we use? (tone, colors, vibe)',
+    suggestions: ['Minimal & modern', 'Bold & playful', 'Elegant & premium'],
+  },
+]
+
 export default function BuilderPage() {
   const navigate = useNavigate()
   const location = useLocation()
@@ -27,6 +58,13 @@ export default function BuilderPage() {
   const [messages, setMessages] = useState([])
   const [basePrompt, setBasePrompt] = useState('')
   const [inputDraft, setInputDraft] = useState('')
+  const [intake, setIntake] = useState(() => ({
+    stepIndex: 0,
+    values: {},
+    pending: null, // { key, value }
+    done: false,
+    started: false,
+  }))
   // When arriving without an initial prompt, the builder should be immediately usable.
   const [phase, setPhase] = useState('completed') // planning | generating | completed
   const [generationStep, setGenerationStep] = useState(0)
@@ -70,7 +108,7 @@ export default function BuilderPage() {
     }
   }
 
-  const startGeneration = useCallback(async ({ userPrompt, replaceThread }) => {
+  const startGeneration = useCallback(async ({ userPrompt, replaceThread, appendUserMessage = true }) => {
     const runId = ++generationRunRef.current
     const nextBasePrompt = replaceThread ? userPrompt : (basePromptRef.current || promptFromUrl || userPrompt)
 
@@ -80,9 +118,13 @@ export default function BuilderPage() {
     setGenerationStep(0)
     setPreviewHtml(getPreviewHtmlForStep({ step: 0, basePrompt: nextBasePrompt }))
 
-    const now = Date.now()
-    const firstUserMessage = { id: crypto.randomUUID(), role: 'user', content: userPrompt, createdAt: now }
-    setMessages((prev) => (replaceThread ? [firstUserMessage] : [...prev, firstUserMessage]))
+    if (appendUserMessage) {
+      const now = Date.now()
+      const firstUserMessage = { id: crypto.randomUUID(), role: 'user', content: userPrompt, createdAt: now }
+      setMessages((prev) => (replaceThread ? [firstUserMessage] : [...prev, firstUserMessage]))
+    } else if (replaceThread) {
+      setMessages([])
+    }
 
     // Small pause so it feels like it "starts working" instantly after submit.
     await sleep(250)
@@ -124,10 +166,81 @@ export default function BuilderPage() {
     startGeneration({ userPrompt: promptFromUrl, replaceThread: true })
   }, [promptFromUrl, startGeneration])
 
+  function pushMessage(message) {
+    setMessages((prev) => [...prev, message])
+  }
+
+  function compilePrompt(values) {
+    const idea = (values.idea || '').trim()
+    const goals = (values.goals || '').trim()
+    const audience = (values.audience || '').trim()
+    const designTheme = (values.designTheme || '').trim()
+
+    return [
+      `Idea: ${idea}`,
+      `Goals: ${goals}`,
+      `Audience: ${audience}`,
+      `Design theme: ${designTheme}`,
+    ].join('\n')
+  }
+
+  async function finishIntakeAndGenerate(values) {
+    setIntake((prev) => ({ ...prev, done: true, pending: null }))
+    pushMessage({
+      id: crypto.randomUUID(),
+      role: 'ai',
+      content: 'Perfect — generating your first draft now…',
+      createdAt: Date.now(),
+    })
+    const prompt = compilePrompt(values)
+    startGeneration({ userPrompt: prompt, replaceThread: false, appendUserMessage: false })
+  }
+
+  function askNextStep(nextIndex) {
+    const step = INTAKE_STEPS[nextIndex]
+    if (!step) return
+    pushMessage({
+      id: crypto.randomUUID(),
+      role: 'ai',
+      content: `${step.label}: ${step.question}`,
+      createdAt: Date.now(),
+    })
+  }
+
   function handleSend(text) {
     const content = text.trim()
     if (!content) return
-    startGeneration({ userPrompt: content, replaceThread: false })
+
+    // If intake is complete, use the normal generation flow.
+    if (intake.done || promptFromUrl) {
+      startGeneration({ userPrompt: content, replaceThread: false })
+      return
+    }
+
+    const step = INTAKE_STEPS[intake.stepIndex]
+    if (!step) {
+      startGeneration({ userPrompt: content, replaceThread: false })
+      return
+    }
+
+    // Always add the user's message.
+    pushMessage({ id: crypto.randomUUID(), role: 'user', content, createdAt: Date.now() })
+
+    // Accept the value immediately and move to next step.
+    const nextValues = { ...intake.values, [step.key]: content }
+    const nextIndex = intake.stepIndex + 1
+    setIntake((prev) => ({ ...prev, started: true, values: nextValues, stepIndex: nextIndex, pending: null }))
+
+    if (nextIndex >= INTAKE_STEPS.length) finishIntakeAndGenerate(nextValues)
+    else askNextStep(nextIndex)
+  }
+
+  function handleMessageAction({ messageId, actionId, payload }) {
+    if (actionId?.startsWith('reply:')) {
+      const nextText = payload?.text || actionId.slice('reply:'.length)
+      handleSend(nextText)
+      return
+    }
   }
 
   function handleBack() {
@@ -136,10 +249,25 @@ export default function BuilderPage() {
   }
 
   function handleRefresh() {
-    const prompt = (basePromptRef.current || promptFromUrl || '').trim()
-    if (!prompt) return
-    startGeneration({ userPrompt: prompt, replaceThread: true })
+    // Restart chat from scratch (and cancel any in-flight generation).
+    generationRunRef.current += 1
+    setMessages([])
+    setBasePrompt('')
+    setInputDraft('')
+    setPhase('completed')
+    setGenerationStep(0)
+    setPreviewHtml(getSkeletonHtml())
+    setIntake({ stepIndex: 0, values: {}, pending: null, done: false, started: false })
   }
+
+  const intakePromptPills = useMemo(() => {
+    if (promptFromUrl) return []
+    if (intake.done) return []
+    // Keep the initial empty-chat example prompt strip unchanged.
+    if (!intake.started) return []
+    const step = INTAKE_STEPS[intake.stepIndex]
+    return step?.suggestions || []
+  }, [intake.done, intake.started, intake.stepIndex, promptFromUrl])
 
   function handleOpenInNewTab() {
     const html = previewHtml || ''
@@ -218,6 +346,9 @@ export default function BuilderPage() {
               inputValue={inputDraft}
               onInputChange={setInputDraft}
               onSend={handleSend}
+              promptPills={intakePromptPills}
+              onPromptPillSelect={(text) => handleSend(text)}
+              onMessageAction={handleMessageAction}
               phase={phase}
               entryMode={entryMode}
             />
