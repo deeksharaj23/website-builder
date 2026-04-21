@@ -22,7 +22,9 @@ export default function PromptInput() {
   function submit() {
     const prompt = value.trim()
     if (!prompt) return
-    navigate(`/builder?prompt=${encodeURIComponent(prompt)}`)
+    // Use navigation state (not URL params) so the builder can run its intake flow
+    // (goals/audience/design direction) instead of skipping straight to generation.
+    navigate('/builder', { state: { source: 'home', initialIdea: prompt } })
   }
 
   function handleKeyDown(e) {

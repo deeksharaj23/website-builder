@@ -30,7 +30,6 @@ export default function ChatPanel({
   const hasMessages = Boolean(messages?.length)
   const [canScrollPromptsLeft, setCanScrollPromptsLeft] = useState(false)
   const [canScrollPromptsRight, setCanScrollPromptsRight] = useState(false)
-  const shouldCenterPrompts = !canScrollPromptsLeft && !canScrollPromptsRight
 
   const showExamplePrompts = useMemo(() => !hasMessages && entryMode === 'direct', [hasMessages, entryMode])
   const showPromptPills = Array.isArray(promptPills) && promptPills.length > 0
@@ -50,13 +49,11 @@ export default function ChatPanel({
       const left = Math.round(el.scrollLeft)
       const maxLeft = Math.max(0, Math.round(el.scrollWidth - el.clientWidth))
 
-      // Separate thresholds: left should enable as soon as there's any meaningful offset,
-      // right should disable a bit earlier to avoid "extra" scroll from padding.
-      const leftThreshold = 2
-      const rightThreshold = 12
-
-      setCanScrollPromptsLeft(left > leftThreshold)
-      setCanScrollPromptsRight(left < maxLeft - rightThreshold)
+      // Enable arrows whenever there is any remaining scrollable distance.
+      // Keep the thresholds small so arrows don't disable while pills are still clipped.
+      const epsilon = 1
+      setCanScrollPromptsLeft(left > epsilon)
+      setCanScrollPromptsRight(maxLeft > 0 && left < maxLeft - epsilon)
     }
 
     update()
@@ -112,7 +109,7 @@ export default function ChatPanel({
           >
             {/* Left arrow (no overlap; hidden on mobile) */}
             {!hidePromptArrows && (
-              <div className="hidden sm:flex">
+              <div className="hidden sm:flex relative z-10">
                 <button
                   type="button"
                   onClick={() => scrollPromptsBy('left')}
@@ -126,12 +123,14 @@ export default function ChatPanel({
             )}
 
             {/* Scroll row */}
-            <div>
+            <div className="min-w-0 overflow-hidden">
               <div
                 ref={promptsScrollerRef}
                 className={[
-                  hidePromptArrows ? 'thin-scrollbar flex gap-2 overflow-x-auto p-1' : 'no-scrollbar flex gap-2 overflow-x-hidden p-1',
-                  shouldCenterPrompts ? 'justify-center' : '',
+                  // Always allow horizontal scrolling so pills never get clipped.
+                  // When arrows are visible, we hide the scrollbar and rely on the buttons.
+                  hidePromptArrows ? 'thin-scrollbar' : 'no-scrollbar',
+                  'flex gap-2 overflow-x-auto p-1 justify-start',
                 ].join(' ')}
                 style={{ touchAction: 'pan-y' }}
                 aria-label="Prompt pills"
@@ -161,7 +160,7 @@ export default function ChatPanel({
 
             {/* Right arrow (no overlap; hidden on mobile) */}
             {!hidePromptArrows && (
-              <div className="hidden sm:flex justify-end">
+              <div className="hidden sm:flex justify-end relative z-10">
                 <button
                   type="button"
                   onClick={() => scrollPromptsBy('right')}

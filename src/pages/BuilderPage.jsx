@@ -64,6 +64,10 @@ export default function BuilderPage() {
   const location = useLocation()
   const [searchParams] = useSearchParams()
   const promptFromUrl = useMemo(() => (searchParams.get('prompt') || '').trim(), [searchParams])
+  const initialIdeaFromNav = useMemo(() => {
+    const v = location.state?.initialIdea
+    return typeof v === 'string' ? v.trim() : ''
+  }, [location.state])
   const initializedRef = useRef(false)
   const generationRunRef = useRef(0)
   const basePromptRef = useRef('')
@@ -78,6 +82,7 @@ export default function BuilderPage() {
     pending: null, // { key, value }
     done: false,
     started: false,
+    reviewing: false,
   }))
   // When arriving without an initial prompt, the builder should be immediately usable.
   const [phase, setPhase] = useState('completed') // planning | generating | completed
@@ -92,6 +97,21 @@ export default function BuilderPage() {
     showGuides: true,
     snapToGrid: false,
   }))
+
+  const pushMessage = useCallback((message) => {
+    setMessages((prev) => [...prev, message])
+  }, [])
+
+  const askNextStep = useCallback((nextIndex) => {
+    const step = INTAKE_STEPS[nextIndex]
+    if (!step) return
+    pushMessage({
+      id: crypto.randomUUID(),
+      role: 'ai',
+      content: step.question,
+      createdAt: Date.now(),
+    })
+  }, [pushMessage])
 
   const entryMode = useMemo(() => {
     if (promptFromUrl) return 'prompt'
@@ -183,14 +203,37 @@ export default function BuilderPage() {
     if (initializedRef.current) return
     initializedRef.current = true
 
-    if (!promptFromUrl) return
+    // If we arrived with a full prompt in the URL, skip intake and generate immediately.
+    if (promptFromUrl) {
+      startGeneration({ userPrompt: promptFromUrl, replaceThread: true })
+      return
+    }
 
-    startGeneration({ userPrompt: promptFromUrl, replaceThread: true })
-  }, [promptFromUrl, startGeneration])
+    // If we arrived from the homepage hero input, treat that as the "Idea" answer
+    // and continue the intake flow (Goals → Audience → Design theme).
+    if (initialIdeaFromNav) {
+      const now = Date.now()
+      pushMessage({
+        id: crypto.randomUUID(),
+        role: 'ai',
+        content: INTAKE_STEPS[0]?.question || 'What’s the idea for the website?',
+        createdAt: now,
+      })
+      pushMessage({ id: crypto.randomUUID(), role: 'user', content: initialIdeaFromNav, createdAt: now + 1 })
 
-  function pushMessage(message) {
-    setMessages((prev) => [...prev, message])
-  }
+      setIntake((prev) => ({
+        ...prev,
+        started: true,
+        values: { ...prev.values, idea: initialIdeaFromNav },
+        stepIndex: 1,
+        pending: null,
+        done: false,
+      }))
+
+      // Ask the next question (Goals).
+      askNextStep(1)
+    }
+  }, [askNextStep, initialIdeaFromNav, promptFromUrl, pushMessage, startGeneration])
 
   function compilePrompt(values) {
     const idea = (values.idea || '').trim()
@@ -221,14 +264,37 @@ export default function BuilderPage() {
     startGeneration({ userPrompt: prompt, replaceThread: false, appendUserMessage: false })
   }
 
-  function askNextStep(nextIndex) {
-    const step = INTAKE_STEPS[nextIndex]
-    if (!step) return
+  const intakeStepIndexByKey = useMemo(() => (
+    Object.fromEntries(INTAKE_STEPS.map((s, idx) => [s.key, idx]))
+  ), [])
+
+  function presentIntakeReview(values) {
+    const idea = (values.idea || '').trim() || '—'
+    const goals = (values.goals || '').trim() || '—'
+    const audience = (values.audience || '').trim() || '—'
+    const designTheme = (values.designTheme || '').trim() || '—'
+
     pushMessage({
       id: crypto.randomUUID(),
       role: 'ai',
-      content: step.question,
+      content: [
+        'Here’s what I’ll generate based on your answers:',
+        '',
+        `Idea: ${idea}`,
+        `Goals: ${goals}`,
+        `Audience: ${audience}`,
+        `Design theme: ${designTheme}`,
+        '',
+        'Approve to generate, or edit any part.',
+      ].join('\n'),
       createdAt: Date.now(),
+      actions: [
+        { id: 'intake:approve', label: 'Approve & generate', variant: 'default' },
+        { id: 'intake:edit:idea', label: 'Edit idea' },
+        { id: 'intake:edit:goals', label: 'Edit goals' },
+        { id: 'intake:edit:audience', label: 'Edit audience' },
+        { id: 'intake:edit:designTheme', label: 'Edit theme' },
+      ],
     })
   }
 
@@ -239,6 +305,17 @@ export default function BuilderPage() {
     // If intake is complete, use the normal generation flow.
     if (intake.done || promptFromUrl) {
       startGeneration({ userPrompt: content, replaceThread: false })
+      return
+    }
+
+    if (intake.reviewing) {
+      pushMessage({ id: crypto.randomUUID(), role: 'user', content, createdAt: Date.now() })
+      pushMessage({
+        id: crypto.randomUUID(),
+        role: 'ai',
+        content: 'Use the buttons above to approve & generate, or pick a field to edit.',
+        createdAt: Date.now(),
+      })
       return
     }
 
@@ -256,8 +333,12 @@ export default function BuilderPage() {
     const nextIndex = intake.stepIndex + 1
     setIntake((prev) => ({ ...prev, started: true, values: nextValues, stepIndex: nextIndex, pending: null }))
 
-    if (nextIndex >= INTAKE_STEPS.length) finishIntakeAndGenerate(nextValues)
-    else askNextStep(nextIndex)
+    if (nextIndex >= INTAKE_STEPS.length) {
+      setIntake((prev) => ({ ...prev, reviewing: true, stepIndex: INTAKE_STEPS.length - 1, values: nextValues }))
+      presentIntakeReview(nextValues)
+    } else {
+      askNextStep(nextIndex)
+    }
   }
 
   function handleMessageAction({ actionId, payload }) {
@@ -265,6 +346,20 @@ export default function BuilderPage() {
       const nextText = payload?.text || actionId.slice('reply:'.length)
       handleSend(nextText)
       return
+    }
+
+    if (actionId === 'intake:approve') {
+      finishIntakeAndGenerate(intake.values)
+      return
+    }
+
+    if (actionId?.startsWith('intake:edit:')) {
+      const stepKey = actionId.slice('intake:edit:'.length)
+      const idx = intakeStepIndexByKey[stepKey]
+      if (typeof idx !== 'number') return
+
+      setIntake((prev) => ({ ...prev, reviewing: false, stepIndex: idx, started: true, done: false, pending: null }))
+      askNextStep(idx)
     }
   }
 
@@ -282,17 +377,18 @@ export default function BuilderPage() {
     setPhase('completed')
     setGenerationStep(0)
     setPreviewHtml(getSkeletonHtml())
-    setIntake({ stepIndex: 0, values: {}, pending: null, done: false, started: false })
+    setIntake({ stepIndex: 0, values: {}, pending: null, done: false, started: false, reviewing: false })
   }
 
   const intakePromptPills = useMemo(() => {
     if (promptFromUrl) return []
     if (intake.done) return []
+    if (intake.reviewing) return []
     // Keep the initial empty-chat example prompt strip unchanged.
     if (!intake.started) return []
     const step = INTAKE_STEPS[intake.stepIndex]
     return step?.suggestions || []
-  }, [intake.done, intake.started, intake.stepIndex, promptFromUrl])
+  }, [intake.done, intake.reviewing, intake.started, intake.stepIndex, promptFromUrl])
 
   function elaboratePillSelection({ stepKey, value }) {
     const v = String(value || '').trim()
