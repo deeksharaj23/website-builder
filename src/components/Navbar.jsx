@@ -18,9 +18,9 @@ import {
 const NAV_LINKS = [
   { label: 'Templates',  to: '/#templates' },
   { label: 'Plans',      to: '/#plans' },
-  { label: 'Security',   to: '/#plans' },
   { label: 'FAQs',       to: '/#faqs' },
-  { label: 'Enterprise', to: '#' },
+  { label: 'Security',   to: '/security' },
+  { label: 'Enterprise', to: '/enterprise' },
 ]
 
 export default function Navbar() {

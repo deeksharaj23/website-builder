@@ -1,85 +1,74 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
-const STORAGE_KEY = 'orqis.auth.v1'
+async function api(path, { method = 'GET', body, signal } = {}) {
+  const res = await fetch(path, {
+    method,
+    credentials: 'include',
+    headers: body ? { 'Content-Type': 'application/json' } : undefined,
+    body: body ? JSON.stringify(body) : undefined,
+    signal,
+  })
 
-function readStoredUser() {
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY)
-    if (!raw) return null
-    const parsed = JSON.parse(raw)
-    if (!parsed || typeof parsed !== 'object') return null
-    if (typeof parsed.email !== 'string' || !parsed.email.trim()) return null
-    const name = typeof parsed.name === 'string' ? parsed.name.trim() : ''
-    return { email: parsed.email.trim(), name: name || undefined }
-  } catch {
-    return null
+  const data = await res.json().catch(() => null)
+  if (!res.ok) {
+    return { ok: false, error: data?.error || 'Request failed.' }
   }
-}
-
-function writeStoredUser(user) {
-  try {
-    if (!user) window.localStorage.removeItem(STORAGE_KEY)
-    else window.localStorage.setItem(STORAGE_KEY, JSON.stringify(user))
-  } catch {
-    // ignore storage failures (private mode, blocked, etc.)
-  }
+  return data || { ok: true }
 }
 
 const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => (typeof window === 'undefined' ? null : readStoredUser()))
+  const [user, setUser] = useState(null)
+  const [isBootstrapped, setIsBootstrapped] = useState(false)
 
   useEffect(() => {
-    writeStoredUser(user)
-  }, [user])
+    const ctrl = new AbortController()
+    api('/api/auth/me', { signal: ctrl.signal }).then((res) => {
+      if (res?.ok) setUser(res.user || null)
+      setIsBootstrapped(true)
+    }).catch(() => setIsBootstrapped(true))
+    return () => ctrl.abort()
+  }, [])
 
   const login = useCallback(async ({ email, password }) => {
-    const nextEmail = String(email || '').trim()
-    const nextPassword = String(password || '')
-
-    if (!nextEmail) return { ok: false, error: 'Please enter your email.' }
-    if (!nextPassword) return { ok: false, error: 'Please enter your password.' }
-
-    setUser({ email: nextEmail })
+    const res = await api('/api/auth/login', { method: 'POST', body: { email, password } })
+    if (!res.ok) return res
+    setUser(res.user || null)
     return { ok: true }
   }, [])
 
-  const signup = useCallback(async ({ email, password }) => {
-    const nextName = String(arguments?.[0]?.name || '').trim()
-    const nextEmail = String(email || '').trim()
-    const nextPassword = String(password || '')
-
-    if (!nextName) return { ok: false, error: 'Please enter your name.' }
-    if (!nextEmail) return { ok: false, error: 'Please enter your email.' }
-    if (!nextPassword) return { ok: false, error: 'Please create a password.' }
-    if (nextPassword.length < 8) return { ok: false, error: 'Password must be at least 8 characters.' }
-
-    setUser({ email: nextEmail, name: nextName })
+  const signup = useCallback(async ({ name, email, password }) => {
+    const res = await api('/api/auth/signup', { method: 'POST', body: { name, email, password } })
+    if (!res.ok) return res
+    setUser(res.user || null)
     return { ok: true }
   }, [])
 
   const updateProfile = useCallback(({ name }) => {
-    const nextName = String(name || '').trim()
-    if (!nextName) return { ok: false, error: 'Please enter your name.' }
-    setUser((prev) => (prev ? { ...prev, name: nextName } : prev))
-    return { ok: true }
+    return api('/api/auth/profile', { method: 'PATCH', body: { name } }).then((res) => {
+      if (!res.ok) return res
+      setUser(res.user || null)
+      return { ok: true }
+    })
   }, [])
 
   const logout = useCallback(() => {
     setUser(null)
+    api('/api/auth/logout', { method: 'POST' }).catch(() => {})
   }, [])
 
   const value = useMemo(() => {
     return {
       user,
       isAuthenticated: Boolean(user),
+      isBootstrapped,
       login,
       signup,
       updateProfile,
       logout,
     }
-  }, [user, login, signup, updateProfile, logout])
+  }, [user, isBootstrapped, login, signup, updateProfile, logout])
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

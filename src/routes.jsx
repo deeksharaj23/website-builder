@@ -17,6 +17,8 @@
 import {
   HomePage,
   TemplatesPage,
+  SecurityPage,
+  EnterprisePage,
   BuilderPage,
   LoginPage,
   SignupPage,
@@ -39,6 +41,22 @@ const routes = [
     meta: {
       title:       'Templates | Orqis',
       description: 'Pick a template, make it yours, and launch without the usual friction.',
+    },
+  },
+  {
+    path: '/security',
+    Page: SecurityPage,
+    meta: {
+      title:       'Security | Orqis',
+      description: 'Learn how Orqis is designed to protect your data, control access, and reduce risk as you build and publish.',
+    },
+  },
+  {
+    path: '/enterprise',
+    Page: EnterprisePage,
+    meta: {
+      title:       'Enterprise | Orqis',
+      description: 'Enterprise-ready controls and workflows for teams that need governance, visibility, and secure scale.',
     },
   },
   {

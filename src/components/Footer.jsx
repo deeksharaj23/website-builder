@@ -103,7 +103,7 @@ export default function Footer() {
               <img
                 src="/logo-symbol.png"
                 alt=""
-                className="h-7 w-7 rounded-lg object-contain"
+                className="h-7 w-7 rounded-lg object-contain filter brightness-0 invert"
                 aria-hidden="true"
               />
               <span className="text-base font-semibold leading-none text-white">Orqis</span>
