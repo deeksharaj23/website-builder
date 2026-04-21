@@ -1,61 +1,86 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, useCallback, useContext, useMemo, useState } from 'react'
 
-async function api(path, { method = 'GET', body, signal } = {}) {
-  const res = await fetch(path, {
-    method,
-    credentials: 'include',
-    headers: body ? { 'Content-Type': 'application/json' } : undefined,
-    body: body ? JSON.stringify(body) : undefined,
-    signal,
-  })
+// Demo-only auth. No server, no database.
+const STORAGE_KEY = 'orqis_demo_user'
 
-  const data = await res.json().catch(() => null)
-  if (!res.ok) {
-    return { ok: false, error: data?.error || 'Request failed.' }
+function readStoredUser() {
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY)
+    if (!raw) return null
+    const parsed = JSON.parse(raw)
+    if (!parsed || typeof parsed !== 'object') return null
+    if (typeof parsed.email !== 'string') return null
+    if (typeof parsed.name !== 'string') return null
+    return {
+      id: typeof parsed.id === 'number' ? parsed.id : Date.now(),
+      email: parsed.email,
+      name: parsed.name,
+    }
+  } catch {
+    return null
   }
-  return data || { ok: true }
+}
+
+function writeStoredUser(user) {
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(user))
+}
+
+function clearStoredUser() {
+  window.localStorage.removeItem(STORAGE_KEY)
 }
 
 const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null)
-  const [isBootstrapped, setIsBootstrapped] = useState(false)
-
-  useEffect(() => {
-    const ctrl = new AbortController()
-    api('/api/auth/me', { signal: ctrl.signal }).then((res) => {
-      if (res?.ok) setUser(res.user || null)
-      setIsBootstrapped(true)
-    }).catch(() => setIsBootstrapped(true))
-    return () => ctrl.abort()
-  }, [])
+  const [user, setUser] = useState(() => readStoredUser())
+  const [isBootstrapped] = useState(true)
 
   const login = useCallback(async ({ email, password }) => {
-    const res = await api('/api/auth/login', { method: 'POST', body: { email, password } })
-    if (!res.ok) return res
-    setUser(res.user || null)
+    const nextEmail = String(email || '').trim().toLowerCase()
+    const nextPassword = String(password || '')
+    if (!nextEmail || !nextEmail.includes('@')) return { ok: false, error: 'Please enter a valid email.' }
+    if (!nextPassword) return { ok: false, error: 'Please enter your password.' }
+
+    const stored = readStoredUser()
+    if (!stored) return { ok: false, error: 'No demo account found. Please sign up first.' }
+    if (stored.email.toLowerCase() !== nextEmail) return { ok: false, error: 'Invalid email or password.' }
+
+    // Demo-only: we don’t persist passwords locally.
+    setUser(stored)
     return { ok: true }
   }, [])
 
   const signup = useCallback(async ({ name, email, password }) => {
-    const res = await api('/api/auth/signup', { method: 'POST', body: { name, email, password } })
-    if (!res.ok) return res
-    setUser(res.user || null)
+    const nextName = String(name || '').trim()
+    const nextEmail = String(email || '').trim().toLowerCase()
+    const nextPassword = String(password || '')
+
+    if (!nextName) return { ok: false, error: 'Please enter your name.' }
+    if (!nextEmail || !nextEmail.includes('@')) return { ok: false, error: 'Please enter a valid email.' }
+    if (nextPassword.length < 8) return { ok: false, error: 'Password must be at least 8 characters.' }
+
+    const nextUser = { id: Date.now(), email: nextEmail, name: nextName }
+    writeStoredUser(nextUser)
+    setUser(nextUser)
     return { ok: true }
   }, [])
 
   const updateProfile = useCallback(({ name }) => {
-    return api('/api/auth/profile', { method: 'PATCH', body: { name } }).then((res) => {
-      if (!res.ok) return res
-      setUser(res.user || null)
-      return { ok: true }
-    })
+    const nextName = String(name || '').trim()
+    if (!nextName) return Promise.resolve({ ok: false, error: 'Please enter your name.' })
+
+    const stored = readStoredUser()
+    if (!stored) return Promise.resolve({ ok: false, error: 'Not authenticated.' })
+
+    const nextUser = { ...stored, name: nextName }
+    writeStoredUser(nextUser)
+    setUser(nextUser)
+    return Promise.resolve({ ok: true })
   }, [])
 
   const logout = useCallback(() => {
     setUser(null)
-    api('/api/auth/logout', { method: 'POST' }).catch(() => {})
+    clearStoredUser()
   }, [])
 
   const value = useMemo(() => {
