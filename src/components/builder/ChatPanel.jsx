@@ -31,7 +31,9 @@ export default function ChatPanel({
   const [canScrollPromptsLeft, setCanScrollPromptsLeft] = useState(false)
   const [canScrollPromptsRight, setCanScrollPromptsRight] = useState(false)
 
-  const showExamplePrompts = useMemo(() => !hasMessages && entryMode === 'direct', [hasMessages, entryMode])
+  const showExamplePrompts = useMemo(() => (
+    !hasMessages && (entryMode === 'direct' || entryMode === 'signup')
+  ), [hasMessages, entryMode])
   const showPromptPills = Array.isArray(promptPills) && promptPills.length > 0
 
   useEffect(() => {
@@ -90,11 +92,9 @@ export default function ChatPanel({
               />
             ))
           ) : (
-            entryMode === 'direct' ? null : (
+            (entryMode === 'direct' || entryMode === 'signup') ? null : (
               <div className="text-sm text-[hsl(var(--muted-foreground))]">
-                {entryMode === 'signup'
-                  ? 'Welcome in — start by describing what you want to build.'
-                  : 'Enter a prompt on the homepage to start.'}
+                Enter a prompt on the homepage to start.
               </div>
             )
           )}

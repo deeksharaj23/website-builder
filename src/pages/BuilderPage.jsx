@@ -5,6 +5,7 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import BuilderNavbar from '@/components/builder/BuilderNavbar'
 import ChatPanel from '@/components/builder/ChatPanel'
 import PreviewPanel from '@/components/builder/PreviewPanel'
+import { ToastViewport, useToast } from '@/components/ui/toast.jsx'
 
 const GENERATION_MESSAGES = [
   'Understanding your request…',
@@ -62,6 +63,7 @@ const INTAKE_STEPS = [
 export default function BuilderPage() {
   const navigate = useNavigate()
   const location = useLocation()
+  const toast = useToast()
   const [searchParams] = useSearchParams()
   const promptFromUrl = useMemo(() => (searchParams.get('prompt') || '').trim(), [searchParams])
   const initialIdeaFromNav = useMemo(() => {
@@ -69,6 +71,7 @@ export default function BuilderPage() {
     return typeof v === 'string' ? v.trim() : ''
   }, [location.state])
   const initializedRef = useRef(false)
+  const signupToastShownRef = useRef(false)
   const generationRunRef = useRef(0)
   const basePromptRef = useRef('')
   const lastNonChatOnlyViewRef = useRef('preview')
@@ -119,6 +122,13 @@ export default function BuilderPage() {
     if (source === 'signup') return 'signup'
     return 'direct'
   }, [promptFromUrl, location.state])
+
+  useEffect(() => {
+    if (entryMode !== 'signup') return
+    if (signupToastShownRef.current) return
+    signupToastShownRef.current = true
+    toast.success('Successfully signed up')
+  }, [entryMode, toast])
 
   useMeta({
     title:       'Builder | Orqis',
@@ -568,7 +578,7 @@ export default function BuilderPage() {
               : 'w-1/4 min-w-[320px] border-r border-[hsl(var(--border))]',
           ].join(' ')}
         >
-          <div className="h-full">
+          <div className="relative h-full">
             <ChatPanel
               messages={messages}
               inputValue={inputDraft}
@@ -585,6 +595,8 @@ export default function BuilderPage() {
               entryMode={entryMode}
               hidePromptArrows={!isChatOnly}
             />
+            {/* Toasts for the chat experience live inside the chat container. */}
+            <ToastViewport placement="center" />
           </div>
         </div>
 
