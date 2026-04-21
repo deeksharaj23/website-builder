@@ -4,6 +4,9 @@
   "private": true,
   "type": "module",
   "description": "Generate a launch-ready website from a single prompt.",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "dev": "concurrently -k -n web,api -c \"cyan,magenta\" \"vite\" \"node server/index.js\"",
     "dev:web": "vite",
